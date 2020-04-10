@@ -141,8 +141,10 @@
     <ClCompile Include="DataBlock.cpp" />
     <ClCompile Include="DirectoryAPI.cpp" />
     <ClCompile Include="DiskAPI.cpp" />
-    <ClCompile Include="FileAccesAPI.cpp" />
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="FileAccessAPI.cpp" />
     <ClCompile Include="FileSystemAPI.cpp" />
+    <ClCompile Include="FileType.cpp" />
     <ClCompile Include="INode.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Simulation.cpp" />
@@ -151,8 +153,10 @@
     <ClInclude Include="DataBlock.h" />
     <ClInclude Include="DirectoryAPI.h" />
     <ClInclude Include="DiskAPI.h" />
-    <ClInclude Include="FileAccesAPI.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="FileAccessAPI.h" />
     <ClInclude Include="FileSystemAPI.h" />
+    <ClInclude Include="FileType.h" />
     <ClInclude Include="INode.h" />
     <ClInclude Include="Simulation.h" />
   </ItemGroup>

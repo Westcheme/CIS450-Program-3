@@ -45,11 +45,17 @@
     <ClCompile Include="DiskAPI.cpp">
       <Filter>Source Files\API</Filter>
     </ClCompile>
-    <ClCompile Include="FileAccesAPI.cpp">
-      <Filter>Source Files\API</Filter>
-    </ClCompile>
     <ClCompile Include="FileSystemAPI.cpp">
       <Filter>Source Files\API</Filter>
+    </ClCompile>
+    <ClCompile Include="FileAccessAPI.cpp">
+      <Filter>Source Files\API</Filter>
+    </ClCompile>
+    <ClCompile Include="FileType.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,14 +71,20 @@
     <ClInclude Include="DirectoryAPI.h">
       <Filter>Header Files\API</Filter>
     </ClInclude>
-    <ClInclude Include="FileAccesAPI.h">
-      <Filter>Header Files\API</Filter>
-    </ClInclude>
     <ClInclude Include="FileSystemAPI.h">
       <Filter>Header Files\API</Filter>
     </ClInclude>
     <ClInclude Include="Simulation.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileAccessAPI.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="FileType.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
