@@ -138,6 +138,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataBlock.cpp" />
+    <ClCompile Include="DirectoryAPI.cpp" />
+    <ClCompile Include="DiskAPI.cpp" />
+    <ClCompile Include="FileAccesAPI.cpp" />
+    <ClCompile Include="FileSystemAPI.cpp" />
+    <ClCompile Include="INode.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Simulation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DataBlock.h" />
+    <ClInclude Include="DirectoryAPI.h" />
+    <ClInclude Include="DiskAPI.h" />
+    <ClInclude Include="FileAccesAPI.h" />
+    <ClInclude Include="FileSystemAPI.h" />
+    <ClInclude Include="INode.h" />
+    <ClInclude Include="Simulation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
