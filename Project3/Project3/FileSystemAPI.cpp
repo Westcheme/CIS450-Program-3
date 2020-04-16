@@ -10,7 +10,16 @@
 //Failure: return -1 and set osErrMsg to E_FILE_BOOT
 int FileSystemAPI::FS_Boot()
 {
-	
+
+	if (false /*TODO: Check if disk image exists*/) {
+		UMDLibOS::setOSErrorMsg("E_FILE_BOOT");
+		bootSuccess = false;
+		return -1;
+	}
+
+	bootSuccess = true;
+
+	return 0;
 }
 
 //Makes sure the contents of the file system are stored persistently on disk.
@@ -29,5 +38,12 @@ int FileSystemAPI::FS_Reset()
 {
 	FS_Sync();
 
+	if (false /*TODO: Check if reset fails*/) { //Under what circumstances does this fail? Perhaps if FS_Sync() fails?
+		UMDLibOS::setOSErrorMsg("E_FILE_RESET");
+		return -1;
+	}
 
+	bootSuccess = false;
+
+	return 0;
 }

@@ -10,8 +10,11 @@ private:
 	static string osErrMsg;
 	static string diskErrMsg;
 public:
+	static void inputSeekingLoop();
 	static string getDiskErrorMsg();
 	static string getOSErrorMsg();
 	static void setDiskErrorMsg(string _diskErrMsg);
 	static void setOSErrorMsg(string _osErrMsg);
+	static void print(string _message);
+	static void println(string _message);
 };

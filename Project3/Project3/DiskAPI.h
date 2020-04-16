@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "UMDLibOS.h"
 using namespace std;
 
 class DiskAPI

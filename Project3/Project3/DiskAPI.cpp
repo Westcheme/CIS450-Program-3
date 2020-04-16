@@ -49,4 +49,10 @@ int DiskAPI::Disk_Read(int sector, string buffer)
 
 	//If the indicated sector is out of bounds, or the buffer is null,
 	//set the diskErrMsg attribute in Simulation to "E_READ_INVALID_PARAM"
+	if (false /*TODO: CHECK IF SECTOR IS OUT OF BOUNDS*/) {
+		UMDLibOS::setDiskErrorMsg("E_READ_INVALID_PARAM");
+		return -1;
+	}
+
+	return 0;
 }
