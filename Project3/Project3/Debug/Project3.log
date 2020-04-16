@@ -1,0 +1,32 @@
+﻿  DirectoryAPI.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
+  DiskAPI.cpp
+  FileAccessAPI.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(13,3): error C2065: 'osErrMsg': undeclared identifier
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(32,3): error C2065: 'osErrMsg': undeclared identifier
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(37,3): error C2065: 'osErrMsg': undeclared identifier
+  FileSystemAPI.cpp
+  INode.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
+  main.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\main.cpp(1,10): fatal error C1083: Cannot open include file: 'Simulation.h': No such file or directory
+  UMDLibOS.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\UMDLibOS.cpp(6,9): error C2065: 'diskErrMsg': undeclared identifier
+  Generating Code...
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileSystemAPI.cpp(14): error C4716: 'FileSystemAPI::FS_Boot': must return a value
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileSystemAPI.cpp(33): error C4716: 'FileSystemAPI::FS_Reset': must return a value
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(11): error C4716: 'DiskAPI::Disk_Load': must return a value
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(21): error C4716: 'DiskAPI::Disk_Write': must return a value
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(16): error C4716: 'DiskAPI::Disk_Save': must return a value
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(26): error C4716: 'DiskAPI::Disk_Read': must return a value
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(6): error C4716: 'DiskAPI::Disk_Init': must return a value

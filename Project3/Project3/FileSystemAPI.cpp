@@ -19,6 +19,7 @@ int FileSystemAPI::FS_Boot()
 int FileSystemAPI::FS_Sync()
 {
 
+	return 0;
 }
 
 //Calls FS_Sync() and then makes the files system unavailable for access until FS_Boot() is called.
@@ -26,5 +27,7 @@ int FileSystemAPI::FS_Sync()
 //Failure: return -1 and set osErrMsg to E_FILE_RESET
 int FileSystemAPI::FS_Reset()
 {
+	FS_Sync();
+
 
 }
