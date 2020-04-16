@@ -7,7 +7,19 @@
 //Failure: return -1 and set osErrMsg to E_FILE_CREATE
 int FileAccessAPI::File_Create(string file)
 {
-
+	if (file.length() > 15) cout << "File name cannot be greater than 15 characters, file was not created";
+	else if (findFile(file) == -1)
+	{
+		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
+		return -1;
+	}
+	else
+	{
+		File* newFile = new File;
+		newFile->setName(file);
+		newFile->setFD(numFiles);
+		numFiles++;
+	}
 }
 
 //Opens up a file and returns an integer file descriptor, which can be used to read from or write data to that file.
@@ -15,7 +27,21 @@ int FileAccessAPI::File_Create(string file)
 //If there are already maximum number of files open, return -1 and set osErrMsg to E_TOO_MANY_OPEN_FILES
 int FileAccessAPI::File_Open(string file)
 {
-
+	if (numFilesOpen == MAX_NUM_OPEN_FILES)
+	{
+		UMDLibOS::setDiskErrorMsg("E_TOO_MANY_OPEN_FILES");
+		return -1;
+	}
+	else if (findFile(file) == -1)
+	{
+		UMDLibOS::setOSErrorMsg("E_NO_SUCH_FILE");
+		return -1;
+	}
+	else
+	{
+		numFilesOpen++;
+		return findFile(file);
+	}
 }
 
 //Read size bytes from the file referenced by the file descriptor fd.
@@ -41,7 +67,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 
 }
 
-//Update the current file locationof the file pointer.
+//Update the current file location of the file pointer.
 //The location is given as an offset from the beginning of the file.
 //If offset is larger than the size of the file or negative, return -1 and set osErrMsg to E_SEEK_OUT_OF_BOUNDS.
 //If the file is not currently open, return -1 and set osErrMsg to E_SEEK_BAD_FD.
@@ -61,6 +87,11 @@ int FileAccessAPI::File_Close(int fd)
 
 //
 int FileAccessAPI::File_Unlink(string file)
+{
+
+}
+
+int FileAccessAPI::findFile(string file)
 {
 
 }
