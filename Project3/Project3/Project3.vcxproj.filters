@@ -25,14 +25,14 @@
     <Filter Include="Source Files\API">
       <UniqueIdentifier>{04739fb2-5cae-4665-bc33-735d9025daa5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UMDLibOS">
+      <UniqueIdentifier>{619f5539-6df7-4154-a313-832a8f23d2f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UMDLibOS">
+      <UniqueIdentifier>{862863ef-d133-4a4a-b980-f869e77f629e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DataBlock.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="INode.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -48,20 +48,14 @@
     <ClCompile Include="FileAccessAPI.cpp">
       <Filter>Source Files\API</Filter>
     </ClCompile>
-    <ClCompile Include="FileType.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Source Files\Objects</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\UMDLibOS</Filter>
     </ClCompile>
     <ClCompile Include="UMDLibOS.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\UMDLibOS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataBlock.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="INode.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -77,14 +71,8 @@
     <ClInclude Include="FileAccessAPI.h">
       <Filter>Header Files\API</Filter>
     </ClInclude>
-    <ClInclude Include="FileType.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="UMDLibOS.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\UMDLibOS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

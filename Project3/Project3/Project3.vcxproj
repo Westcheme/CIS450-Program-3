@@ -138,25 +138,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DataBlock.cpp" />
     <ClCompile Include="DirectoryAPI.cpp" />
     <ClCompile Include="DiskAPI.cpp" />
-    <ClCompile Include="File.cpp" />
     <ClCompile Include="FileAccessAPI.cpp" />
     <ClCompile Include="FileSystemAPI.cpp" />
-    <ClCompile Include="FileType.cpp" />
     <ClCompile Include="INode.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UMDLibOS.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataBlock.h" />
     <ClInclude Include="DirectoryAPI.h" />
     <ClInclude Include="DiskAPI.h" />
-    <ClInclude Include="File.h" />
     <ClInclude Include="FileAccessAPI.h" />
     <ClInclude Include="FileSystemAPI.h" />
-    <ClInclude Include="FileType.h" />
     <ClInclude Include="INode.h" />
     <ClInclude Include="UMDLibOS.h" />
   </ItemGroup>

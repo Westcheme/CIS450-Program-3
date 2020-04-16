@@ -3,16 +3,19 @@
 #include "FileAccessAPI.h"
 #include "FileSystemAPI.h"
 
+#define MAX_FILES_AND_DIRECTORIES 100
+
+string osErrMsg;
+string diskErrMsg;
+
+string getDiskErrorMsg();
+string getOSErrorMsg();
+void setDiskErrorMsg(string _diskErrMsg);
+void setOSErrorMsg(string _osErrMsg);
+
 
 #pragma once
 class UMDLibOS
 {
-private:
-	string osErrMsg;
-	string diskErrMsg;
-public:
-	string getDiskErrorMsg();
-	string getOSErrorMsg();
-	void setDiskErrorMsg(string _diskErrMsg);
-	void setOSErrorMsg(string _osErrMsg);
+
 };
