@@ -6,8 +6,8 @@
 class INode
 {
 private:
-	list <DataBlock> dataBlocks;
 	int fileSize;
 	FileType fileType;
+	list <DataBlock> dataBlocks;
 };
 

@@ -5,9 +5,12 @@ using namespace std;
 class File
 {
 private:
-	File subFiles;
-
+	File *subFiles;
+	string name;
+	int fd;
+	
 public:
-	int findFile(string name);
-};
-
+	File();
+	void setName(string _name);
+	void setFD(int _fd);
+}*Root;
