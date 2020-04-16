@@ -13,3 +13,6 @@ Project3/.vs/Project3/v16/ipch/AutoPCH/ce067e3750136c69/UMDLIBOS.ipch
 Project3/.vs/Project3/v16/ipch/AutoPCH/4b0ed3ff9810532f/DIRECTORYAPI.ipch
 Project3/.vs/Project3/v16/Browse.VC.db
 Project3/.vs/Project3/v16/.suo
+*.db
+*.ipch
+*.db

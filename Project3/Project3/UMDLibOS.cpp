@@ -62,17 +62,17 @@ string UMDLibOS::getDiskErrorMsg()
 {
 	return diskErrMsg;
 }
-string UMDLibOS::getOSErrorMsg()
+string getOSErrorMsg()
 {
 	return osErrMsg;
 }
 
-void UMDLibOS::setDiskErrorMsg(string _diskErrMsg)
+void setDiskErrorMsg(string _diskErrMsg)
 {
 	diskErrMsg = _diskErrMsg;
 }
 
-void UMDLibOS::setOSErrorMsg(string _osErrMsg)
+void setOSErrorMsg(string _osErrMsg)
 {
 	osErrMsg = _osErrMsg;
 }

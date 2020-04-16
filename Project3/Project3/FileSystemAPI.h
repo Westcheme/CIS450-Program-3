@@ -8,4 +8,3 @@ public:
 	int FS_Sync();
 	int FS_Reset();
 };
-
