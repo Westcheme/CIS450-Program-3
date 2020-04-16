@@ -10,7 +10,7 @@ int FileAccessAPI::File_Create(string file)
 	if (file.length() > 15) cout << "File name cannot be greater than 15 characters, file was not created";
 	else if (findFile(file) == -1)
 	{
-		UMDLisbOS::setOSErrMsg = "E_FILE_CREATE";
+		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
 		return -1;
 	}
 	else
@@ -29,12 +29,12 @@ int FileAccessAPI::File_Open(string file)
 {
 	if (numFilesOpen == MAX_NUM_OPEN_FILES)
 	{
-		setDiskErrorMsg("E_TOO_MANY_OPEN_FILES");
+		UMDLibOS::setDiskErrorMsg("E_TOO_MANY_OPEN_FILES");
 		return -1;
 	}
 	else if (findFile(file) == -1)
 	{
-		osErrMsg = "E_NO_SUCH_FILE";
+		UMDLibOS::setOSErrorMsg("E_NO_SUCH_FILE");
 		return -1;
 	}
 	else

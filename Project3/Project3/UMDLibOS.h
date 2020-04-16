@@ -7,11 +7,11 @@
 class UMDLibOS
 {
 private:
-	string osErrMsg;
-	string diskErrMsg;
+	static string osErrMsg;
+	static string diskErrMsg;
 public:
-	string getDiskErrorMsg();
-	string getOSErrorMsg();
-	void setDiskErrorMsg(string _diskErrMsg);
-	void setOSErrorMsg(string _osErrMsg);
+	static string getDiskErrorMsg();
+	static string getOSErrorMsg();
+	static void setDiskErrorMsg(string _diskErrMsg);
+	static void setOSErrorMsg(string _osErrMsg);
 };
