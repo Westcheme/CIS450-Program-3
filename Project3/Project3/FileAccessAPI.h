@@ -1,4 +1,5 @@
 #pragma once
+#include "Simulation.cpp"
 #include "INode.h"
 #include "File.h"
 #include <string>

@@ -7,7 +7,8 @@
 //Failure: return -1 and set osErrMsg to E_FILE_CREATE
 int FileAccessAPI::File_Create(string file)
 {
-
+	//on failure
+	Simulation::osErrMsg = "E_FILE_CREATE";
 }
 
 //Opens up a file and returns an integer file descriptor, which can be used to read from or write data to that file.
