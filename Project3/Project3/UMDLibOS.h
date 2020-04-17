@@ -5,19 +5,14 @@
 
 #define MAX_FILES_AND_DIRECTORIES 100
 
-string osErrMsg;
-string diskErrMsg;
-
-string getDiskErrorMsg();
-string getOSErrorMsg();
-void setDiskErrorMsg(string _diskErrMsg);
-void setOSErrorMsg(string _osErrMsg);
-
 
 #pragma once
 class UMDLibOS
 {
 private:
+
+	char* externalDisk;
+	char* workingDisk;
 	static string osErrMsg;
 	static string diskErrMsg;
 public:
@@ -26,6 +21,4 @@ public:
 	static string getOSErrorMsg();
 	static void setDiskErrorMsg(string _diskErrMsg);
 	static void setOSErrorMsg(string _osErrMsg);
-	static void print(string _message);
-	static void println(string _message);
 };

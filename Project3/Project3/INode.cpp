@@ -4,6 +4,14 @@
 INode::INode()
 {
 	size = 0;
+	name = "";
+	dataBlocks = NULL;
+	numberDataBlocks = 0;
+}
+
+INode::~INode() 
+{
+	delete[numberDataBlocks] dataBlocks;
 }
 
 FileINode::FileINode()
@@ -16,6 +24,12 @@ DirectoryINode::DirectoryINode()
 	fileType = "Directory";
 	subDirectories = NULL;
 	subFiles = NULL;
+}
+
+DirectoryINode::~DirectoryINode()
+{
+	delete[numberSubFiles] subFiles;
+	delete[numberSubDirectories] subDirectories;
 }
 
 

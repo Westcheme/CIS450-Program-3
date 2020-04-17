@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <string>
+#include <memory>
 using namespace std;
 
 #define MAX_FILE_SIZE 10
@@ -9,6 +10,7 @@ using namespace std;
 
 struct DataBlock
 {
+public: 
 	int byteStream;
 	int ID;
 	int size;
@@ -20,11 +22,13 @@ class INode
 {
 protected:
 	int size;
-	string name;
+	string name; //In a real Linux file system, the name of the file would not be stored in the INode, but 
 	string fileType;
-	DataBlock *dataBlocks;
+	unique_ptr<DataBlock>* dataBlocks;
+	int numberDataBlocks;
 public:
 	INode();
+	~INode();
 	void setName(string name);
 };
 
@@ -41,8 +45,11 @@ public:
 class DirectoryINode : public INode
 {
 private:
-	FileINode *subFiles;
-	DirectoryINode *subDirectories;
+	unique_ptr<FileINode>* subFiles;
+	unique_ptr<DirectoryINode>* subDirectories;
+	int numberSubFiles = 0;
+	int numberSubDirectories = 0;
 public:
 	DirectoryINode();
+	~DirectoryINode();
 };

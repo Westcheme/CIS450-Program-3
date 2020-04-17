@@ -12,7 +12,11 @@ void UMDLibOS::inputSeekingLoop() {
 	DiskAPI DISK_API;
 
 	displayWelcomeMessage();
-	//call FS_BOOT;
+
+	//askLoadExternalDisk(); //Loads an external disk from a file and writes it to externalDisk
+
+	//call FS_Boot exactly once;
+	FS_API.FS_Boot();
 
 	while (running) {
 
@@ -62,17 +66,17 @@ string UMDLibOS::getDiskErrorMsg()
 {
 	return diskErrMsg;
 }
-string getOSErrorMsg()
+string UMDLibOS::getOSErrorMsg()
 {
 	return osErrMsg;
 }
 
-void setDiskErrorMsg(string _diskErrMsg)
+void UMDLibOS::setDiskErrorMsg(string _diskErrMsg)
 {
 	diskErrMsg = _diskErrMsg;
 }
 
-void setOSErrorMsg(string _osErrMsg)
+void UMDLibOS::setOSErrorMsg(string _osErrMsg)
 {
 	osErrMsg = _osErrMsg;
 }

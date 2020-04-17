@@ -5,18 +5,21 @@ int DiskAPI::Disk_Init()
 	//Initialize all disk sectors to 0
 	for (int i = 0; i < NUM_SECTORS; i++)
 	{
-		diskSectors[i].size = 0;
+		externalDiskSectors[i]->get->size = 0;
+		workingDiskSectors[i]->get->size = 0;
 	}
 
-	//Create the root directory
-	DirectoryINode *rootDirectory = new DirectoryINode;
-	rootDirectory->setName("Root");
-	INodeBitmap[0] = 1;
+	//Create the root directory if one does not already exist
+	if (rootDirectory == NULL) {
+		rootDirectory->get = new DirectoryINode;
+		rootDirectory->get->setName("Root");
+		INodeBitmap[0] = 1;
+	}
 
 	//Crate the super block and store it to disk sector 0
-	DataBlock *superBlock = new DataBlock;
-	superBlock->size = 4;	//Magic Number
-	diskSectors[0] = *superBlock;
+	DataBlock* superBlock = new DataBlock;
+	superBlock->size = BLOCK_SIZE;
+	assignDataBlockToDiskSector(0, superBlock);
 
 	return 0;
 }
@@ -26,7 +29,23 @@ int DiskAPI::Disk_Init()
 int DiskAPI::Disk_Load()
 {
 
-
+	if (externalDiskSectors[0]->get != NULL) //if external disk has a super block, load into working disk
+	{
+		for (int i = 0; i < NUM_SECTORS; i++) 
+		{
+			if(externalDiskSectors[i]->get != NULL)
+			{
+				//TODO: Get this to work in a way that copies values
+				//rather than copying the reference
+				DataBlock tempBlock;
+				workingDiskSectors[i]->get = new DataBlock;
+			}
+			else
+			{
+				workingDiskSectors[i]->get = externalDiskSectors[i]->get->;
+			}
+		}
+	}
 	return 0;
 }
 
@@ -62,4 +81,11 @@ int DiskAPI::Disk_Read(int sector, string buffer)
 	}
 
 	return 0;
+}
+
+//HELPER METHODS BELOW
+
+void DiskAPI::assignDataBlockToDiskSector(int sector, DataBlock* dataBlock) {
+	workingDiskSectors[sector] = dataBlock;
+	DiskSectorBitmap[sector] = 1;
 }
