@@ -9,10 +9,11 @@ using namespace std;
 class FileAccessAPI
 {
 private:
-	int numFiles = 1;
-	int numFilesOpen = 0;
+	int numFiles;
+	int numFilesOpen;
 	int *filePointer[MAX_NUM_OPEN_FILES];
 public:
+	FileAccessAPI();
 	int File_Create(string file);
 	int File_Open(string file);
 	int File_Read(int fd, string buffer, int size);
@@ -21,4 +22,5 @@ public:
 	int File_Close(int fd);
 	int File_Unlink(string file);
 	int findFile(string file);
+	int getNumFiles();
 };
