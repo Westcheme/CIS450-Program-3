@@ -14,7 +14,7 @@ int DiskAPI::Disk_Init()
 	rootDirectory->setName("Root");
 	INodeBitmap[0] = 1;
 
-	//Crate the super block and store it to disk sector 0
+	//Create the super block and store it to disk sector 0
 	DataBlock *superBlock = new DataBlock;
 	superBlock->size = 4;	//Magic Number
 	diskSectors[0] = *superBlock;

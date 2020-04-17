@@ -12,6 +12,7 @@ string getDiskErrorMsg();
 string getOSErrorMsg();
 void setDiskErrorMsg(string _diskErrMsg);
 void setOSErrorMsg(string _osErrMsg);
+int findFile(string file);
 
 
 #pragma once

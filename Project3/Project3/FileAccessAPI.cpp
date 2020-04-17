@@ -1,6 +1,16 @@
 #include "FileAccessAPI.h"
 
 
+FileAccessAPI::FileAccessAPI()
+{
+	numFiles = 0;
+	numFilesOpen = 0;
+	for (int i = 0; i < MAX_NUM_OPEN_FILES; i++)
+	{
+		filePointer[i] = NULL;
+	}
+}
+
 //Creates a new file of the name pointed to by file.
 //If the file already exists return -1 and set osErrMsg to E_FILE_CREATE
 //Success: return 0
@@ -9,7 +19,7 @@ int FileAccessAPI::File_Create(string file)
 {
 	if (file.length() > 15) cout << "File name cannot be greater than 15 characters, file was not created";
 	else if (file == "") cout << "File name cannot be empty string, file was not created";
-	else if (findFile(file) == -1)
+	else if (findFile(file) >= 0)
 	{
 		setOSErrorMsg("E_FILE_CREATE");
 		return -1;
@@ -92,7 +102,7 @@ int FileAccessAPI::File_Unlink(string file)
 
 }
 
-int FileAccessAPI::findFile(string file)
+int FileAccessAPI::getNumFiles()
 {
-
+	return numFiles;
 }
