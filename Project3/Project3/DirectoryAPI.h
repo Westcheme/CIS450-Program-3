@@ -6,6 +6,8 @@ using namespace std;
 
 class DirectoryAPI
 {
+private:
+	bool INodeBitmap[NUM_SECTORS];
 public:
 	int Dir_Create(string path);
 	int Dir_Size(string path);

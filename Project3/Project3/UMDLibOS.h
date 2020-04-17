@@ -10,9 +10,6 @@
 class UMDLibOS
 {
 private:
-
-	char* externalDisk;
-	char* workingDisk;
 	static string osErrMsg;
 	static string diskErrMsg;
 public:
