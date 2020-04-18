@@ -7,7 +7,8 @@ FileAccessAPI::FileAccessAPI()
 	numFilesOpen = 0;
 	for (int i = 0; i < MAX_NUM_OPEN_FILES; i++)
 	{
-		filePointer[i] = NULL;
+		openFiles[i] = NULL;
+		filePointer[i] = 0;
 	}
 }
 
@@ -17,16 +18,38 @@ FileAccessAPI::FileAccessAPI()
 //Failure: return -1 and set osErrMsg to E_FILE_CREATE
 int FileAccessAPI::File_Create(string file)
 {
-	if (file.length() > 15) cout << "File name cannot be greater than 15 characters, file was not created";
-	else if (file == "") cout << "File name cannot be empty string, file was not created";
-	else if (findFile(file) >= 0)
+	if (file[file.length() - 1] == '/')
+		file = file.substr(0, file.size - 1);
+
+	string path = file.substr(0, file.find_last_of('/'));
+
+	if (DirectoryAPI::findDirectory(path) == NULL)
 	{
-		setOSErrorMsg("E_FILE_CREATE");
+		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
+		cout << "The path does not exist, file was not created";
+		return -1;
+	}
+	else if (file.length() > 15)
+	{
+		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
+		cout << "File name cannot be greater than 15 characters, file was not created";
+		return -1;
+	}
+	else if (file == "")
+	{
+		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
+		cout << "File name cannot be empty string, file was not created";
+		return -1;
+	}
+	else if (findFile(file) != NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
+		cout << "File already already exists within this directory, file was not created";
 		return -1;
 	}
 	else
 	{
-		FileINode *newFile = new FileINode;
+		FileINode* newFile = new FileINode;
 		newFile->setName(file);
 		numFiles++;
 		return 0;
@@ -40,30 +63,46 @@ int FileAccessAPI::File_Open(string file)
 {
 	if (numFilesOpen == MAX_NUM_OPEN_FILES)
 	{
-		setOSErrorMsg("E_TOO_MANY_OPEN_FILES");
+		UMDLibOS::setOSErrorMsg("E_TOO_MANY_OPEN_FILES");
 		return -1;
 	}
-	else if (findFile(file) == -1)
+	else if (findFile(file) == NULL)
 	{
-		setOSErrorMsg("E_NO_SUCH_FILE");
+		UMDLibOS::setOSErrorMsg("E_NO_SUCH_FILE");
 		return -1;
 	}
 	else
 	{
+		int fileDescriptor = numFilesOpen;
+		openFiles[fileDescriptor] = findFile(file);
+		filePointer[fileDescriptor] = 0;
 		numFilesOpen++;
-		return findFile(file);
+		return fileDescriptor;
 	}
 }
 
 //Read size bytes from the file referenced by the file descriptor fd.
 //The data should be read into a buffer area buffer.
 //All reads should begin at the current location of the file pointer, and file pointer should be updated after the read to the new location.
-////If the file is not open, return -1 and set osErrMsg to E_READ_BAD_FD.
+//If the file is not open, return -1 and set osErrMsg to E_READ_BAD_FD.
 //If the file is open, the number of bytes actually read should be returned, which can be less than or equal to size.
 //If the file pointer is already at the end of the file, zero should be returned.
-int FileAccessAPI::File_Read(int fd, string buffer, int size)
+int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 {
-
+	if (openFiles[fd] == NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
+		return -1;
+	}
+	else if(filePointer[fd] == openFiles[fd]->get->size - 1)
+	else if(size <= openFiles[fd]->get->size)
+	{
+		filePointer[fd] += size;
+	}
+	else if (size > openFiles[fd]->get->size)
+	{
+		filePointer[fd] += openFiles[fd]->get->size;
+	}
 }
 
 //Write size bytes from buffer and write them into the file referenced by fd.
@@ -75,7 +114,20 @@ int FileAccessAPI::File_Read(int fd, string buffer, int size)
 //If the file exceeds the maximum file size, return -1 and set osErrMsg to E_FILE_TOO_BIG.
 int FileAccessAPI::File_Write(int fd, string buffer, int size)
 {
+	if (openFiles[fd] == NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_BAD_FD");
+		return -1;
+	}
+	else if (openFiles[fd]->get->size > MAX_FILE_SIZE)
+	{
+		UMDLibOS::setOSErrorMsg("E_FILE_TOO_BIG");
+		return -1;
+	}
+	else
+	{
 
+	}
 }
 
 //Update the current file location of the file pointer.
@@ -85,7 +137,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 //Success: return the new location of the file pointer.
 int FileAccessAPI::File_Seek(int fd, int offset)
 {
-
+	if(offset < 0 || offset > )
 }
 
 //Close the file referred to by file descriptor fd.
@@ -98,6 +150,11 @@ int FileAccessAPI::File_Close(int fd)
 
 //
 int FileAccessAPI::File_Unlink(string file)
+{
+
+}
+
+unique_ptr<FileINode>* FileAccessAPI::findFile(string file)
 {
 
 }

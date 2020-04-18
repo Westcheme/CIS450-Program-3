@@ -141,6 +141,8 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 int DirectoryAPI::Dir_Unlink(string path)
 {
 
+	string h = path.c_str("\\");
+
 
 	//if path is root directory ("/")
 	if (!(path.compare("/"))) { //compare should return 0 when two strings are the same, -1 if path is comes first alphabetically, 1 if after
@@ -155,6 +157,11 @@ int DirectoryAPI::Dir_Unlink(string path)
 	}
 
 	return 0;
+}
+
+INode* DirectoryAPI::findDirectory(string path)
+{
+
 }
 
 int DirectoryAPI::getNumDirectories()
