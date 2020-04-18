@@ -1,9 +1,9 @@
 #pragma once
-#include "UMDLibOS.h"
+
+class UMDLibOS;
+
 class FileSystemAPI
 {
-private:
-	bool bootSuccess = false;
 public:
 	int FS_Boot();
 	int FS_Sync();

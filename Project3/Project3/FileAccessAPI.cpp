@@ -18,8 +18,15 @@ FileAccessAPI::FileAccessAPI()
 //Failure: return -1 and set osErrMsg to E_FILE_CREATE
 int FileAccessAPI::File_Create(string file)
 {
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
+
 	if (file[file.length() - 1] == '/')
-		file = file.substr(0, file.size - 1);
+		file = file.substr(0, file.size() - 1);
 
 	string path = file.substr(0, file.find_last_of('/'));
 
@@ -66,6 +73,12 @@ int FileAccessAPI::File_Open(string file)
 
 	string path = file.substr(0, file.find_last_of('/'));
 
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
 	if (numFilesOpen == MAX_NUM_OPEN_FILES)
 	{
 		UMDLibOS::setOSErrorMsg("E_TOO_MANY_OPEN_FILES");
@@ -96,23 +109,30 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 {
 	int bytesRead = 0;
 
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
 	if (openFiles[fd] == NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
 		return -1;
 	}
-	else if (filePointer[fd] == openFiles[fd].get->size - 1)
+	else if (filePointer[fd] == (openFiles.at(fd)->getSize() - 1))
 	{
-		return 0;
+		
+
 	}
-	else if(size <= openFiles[fd].get->size)
+	else if (size <= openFiles[fd]->getSize())
 	{
 		filePointer[fd] += size;
 		bytesRead = size;
 	}
-	else if (size > openFiles[fd].get->size)
+	else if (size > openFiles[fd]->getSize())
 	{
-		filePointer[fd] += openFiles[fd].get->size - filePointer[fd];
+		filePointer[fd] += openFiles[fd]->getSize() - filePointer[fd];
 		bytesRead = openFiles[fd].get->size - filePointer[fd];
 	}
 	else
@@ -143,12 +163,18 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 //If the file exceeds the maximum file size, return -1 and set osErrMsg to E_FILE_TOO_BIG.
 int FileAccessAPI::File_Write(int fd, string buffer, int size)
 {
+	if (fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
 	if (openFiles[fd] == NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_BAD_FD");
 		return -1;
 	}
-	else if (openFiles[fd].get->size > MAX_FILE_SIZE * 512)
+	else if (openFiles[fd]->getSize() > MAX_FILE_SIZE * 512)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_TOO_BIG");
 		return -1;
@@ -166,7 +192,13 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 //Success: return the new location of the file pointer.
 int FileAccessAPI::File_Seek(int fd, int offset)
 {
-	if(offset < 0 || offset > )
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
+	//if(offset < 0 || offset > )
 }
 
 //Close the file referred to by file descriptor fd.
@@ -174,19 +206,39 @@ int FileAccessAPI::File_Seek(int fd, int offset)
 //Success: return 0
 int FileAccessAPI::File_Close(int fd)
 {
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
 
 }
 
 //
 int FileAccessAPI::File_Unlink(string file)
 {
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
 
 }
+
+
+//HEPLER METHODS BELOW:
+
 
 unique_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
 {
 	DirectoryINode directoryINode = DirectoryAPI::findDirectory(path);
+}
 
+unique_ptr<FileINode> FileAccessAPI::findFile(string file)
+{
+	return NULL;
 }
 
 int FileAccessAPI::getNumFiles()

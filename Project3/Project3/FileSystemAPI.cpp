@@ -1,5 +1,6 @@
 #include "FileSystemAPI.h"
-
+#include "DiskAPI.h"
+#include "UMDLibOS.h"
 
 //ANY ACCESS ATTEMPT WHILE FILE SYSTEM IS UNAVAILABLE return -1 and set osErrMsg to E_INVALID_ACCESS_ATTEMPT
 
@@ -10,14 +11,17 @@
 //Failure: return -1 and set osErrMsg to E_FILE_BOOT
 int FileSystemAPI::FS_Boot()
 {
+	//Currently always creates a new disk if something were to fail
+	DISK_API->Disk_Init();
 
-	if (false /*TODO: Check if disk image exists*/) {
+	if (false /*No current way for this to fail*/) {
+		
 		UMDLibOS::setOSErrorMsg("E_FILE_BOOT");
-		bootSuccess = false;
+		fs_available = false;
 		return -1;
 	}
 
-	bootSuccess = true;
+	fs_available = true;
 
 	return 0;
 }
@@ -27,7 +31,7 @@ int FileSystemAPI::FS_Boot()
 //return 0
 int FileSystemAPI::FS_Sync()
 {
-
+	DISK_API->Disk_Save();
 	return 0;
 }
 
@@ -43,7 +47,7 @@ int FileSystemAPI::FS_Reset()
 		return -1;
 	}
 
-	bootSuccess = false;
+	fs_available = false;
 
 	return 0;
 }

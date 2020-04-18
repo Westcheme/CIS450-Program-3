@@ -1,3 +1,4 @@
+#include "UMDLibOS.h"
 #include "DiskAPI.h"
 
 int DiskAPI::Disk_Init()
@@ -20,10 +21,10 @@ int DiskAPI::Disk_Init()
 	}
 	
 	//Create the root directory if one does not already exist
-	if (UMDLibOS::rootDirectory == NULL) {
-		UMDLibOS::rootDirectory.reset(new DirectoryINode);
-		UMDLibOS::rootDirectory->setName("Root");
-		UMDLibOS::INodeBitmap[0] = 1;
+	if (rootDirectory == NULL) {
+		rootDirectory.reset(new DirectoryINode);
+		rootDirectory->setName("Root");
+		INodeBitmap[0] = 1;
 	}
 
 	//Crate the super block and store it to disk sector 0
@@ -31,7 +32,7 @@ int DiskAPI::Disk_Init()
 	superBlock->size = SECTOR_SIZE;
 	superBlock->byteStream = MAGIC_NUMBER;
 	superBlock->size = 1;
-	assignDataBlockToDiskSector(0, superBlock.get);
+	assignDataBlockToDiskSector(0, superBlock);
 
 	return 0;
 }
@@ -140,9 +141,9 @@ int DiskAPI::Disk_Read(int sector, string& buffer)
 
 //HELPER METHODS BELOW
 
-void DiskAPI::assignDataBlockToDiskSector(int sector, unique_ptr<DataBlock> dataBlock) {
+void DiskAPI::assignDataBlockToDiskSector(int sector, unique_ptr<DataBlock>& dataBlock) {
 	workingDiskSectors[sector]->byteStream = dataBlock->byteStream;
 	workingDiskSectors[sector]->ID = sector;
-	workingDiskSectors[sector]->size = dataBlock->byteStream.size;
-	UMDLibOS::DiskSectorBitmap[sector] = 1;
+	workingDiskSectors[sector]->size = dataBlock->byteStream.size();
+	DiskSectorBitmap[sector] = 1;
 }

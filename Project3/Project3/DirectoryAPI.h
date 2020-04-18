@@ -1,11 +1,8 @@
 #pragma once
 #include "UMDLibOS.h"
-#include "INode.h"
-#include <string>
-#include <iostream>
-#include <istream>
-#include <vector>
 using namespace std;
+
+class UMDLibOS;
 
 class DirectoryAPI
 {
@@ -18,6 +15,6 @@ public:
 	int Dir_Read(string path, string& buffer, int size);
 	int Dir_Unlink(string path);
 	int getNumDirectories();
-	unique_ptr<DirectoryINode> findDirectory(string path);
+	static unique_ptr<DirectoryINode> findDirectory(string path);
 };
 
