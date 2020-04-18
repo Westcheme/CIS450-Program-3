@@ -15,6 +15,12 @@ private:
 	static string osErrMsg;
 	static string diskErrMsg;
 public:
+	UMDLibOS();
+	static bool fs_available;
+	static FileAccessAPI* FA_API;
+	static FileSystemAPI* FS_API;
+	static DirectoryAPI* DIR_API;
+	static DiskAPI* DISK_API;
 	static unique_ptr<DirectoryINode> rootDirectory;
 	static bool DiskSectorBitmap[NUM_SECTORS];
 	static bool INodeBitmap[NUM_SECTORS];
@@ -23,6 +29,7 @@ public:
 	static string getOSErrorMsg();
 	static void setDiskErrorMsg(string _diskErrMsg);
 	static void setOSErrorMsg(string _osErrMsg);
+	static bool fileSystemAccessible();
 	static int hexToDecimal(string hex);
 	static string decimalToHex(int decimal);
 };

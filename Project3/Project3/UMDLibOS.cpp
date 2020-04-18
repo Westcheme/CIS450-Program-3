@@ -1,22 +1,23 @@
 #include "UMDLibOS.h"
 
+UMDLibOS::UMDLibOS()
+{
+	FA_API = new FileAccessAPI;
+	fs_available = false;
+}
+
 void UMDLibOS::inputSeekingLoop() {
 
 	bool running = true;
 	int integerResponse;
 	string stringResponse;
 
-	FileAccessAPI FA_API;
-	FileSystemAPI FS_API;
-	DirectoryAPI DIR_API;
-	DiskAPI DISK_API;
-
 	displayWelcomeMessage();
 
 	//askLoadExternalDisk(); //Loads an external disk from a file and writes it to externalDisk
 
 	//call FS_Boot exactly once;
-	FS_API.FS_Boot();
+	FS_API->FS_Boot();
 
 	while (running) {
 
@@ -51,6 +52,15 @@ void UMDLibOS::inputSeekingLoop() {
 
 				break;
 			case 9:
+
+				break;
+			case 10:
+
+				break;
+			case 11:
+
+				break;
+			case 12:
 
 				break;
 			default:
@@ -133,4 +143,7 @@ void displayUMDLibOSInteractions() {
 	println("7. Unlink File");
 	println("8. Check OS Error Message");
 	println("9. Check Disk Error Message");
+	println("10. Call FS_Boot()");
+	println("11. Call FS_Sync()");
+	println("12. Call FS_Reset()");
 }

@@ -10,14 +10,16 @@
 //Failure: return -1 and set osErrMsg to E_FILE_BOOT
 int FileSystemAPI::FS_Boot()
 {
+	//Currently always creates a new disk if something were to fail
+	UMDLibOS::DISK_API->Disk_Init();
 
-	if (false /*TODO: Check if disk image exists*/) {
+	if (false /*No current way for this to fail*/) {
 		UMDLibOS::setOSErrorMsg("E_FILE_BOOT");
-		bootSuccess = false;
+		UMDLibOS::fs_available = false;
 		return -1;
 	}
 
-	bootSuccess = true;
+	UMDLibOS::fs_available = true;
 
 	return 0;
 }
@@ -27,7 +29,7 @@ int FileSystemAPI::FS_Boot()
 //return 0
 int FileSystemAPI::FS_Sync()
 {
-
+	UMDLibOS::DISK_API->Disk_Save();
 	return 0;
 }
 
@@ -43,7 +45,7 @@ int FileSystemAPI::FS_Reset()
 		return -1;
 	}
 
-	bootSuccess = false;
+	UMDLibOS::fs_available = false;
 
 	return 0;
 }

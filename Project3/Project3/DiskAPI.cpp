@@ -27,11 +27,11 @@ int DiskAPI::Disk_Init()
 	}
 
 	//Crate the super block and store it to disk sector 0
-	unique_ptr<DataBlock>* superBlock = new unique_ptr<DataBlock>();
-	superBlock->get->size = SECTOR_SIZE;
-	superBlock->get->byteStream = MAGIC_NUMBER;
-	superBlock->get->size = 1;
-	assignDataBlockToDiskSector(0, superBlock);
+	unique_ptr<DataBlock> superBlock;
+	superBlock->size = SECTOR_SIZE;
+	superBlock->byteStream = MAGIC_NUMBER;
+	superBlock->size = 1;
+	assignDataBlockToDiskSector(0, superBlock.get);
 
 	return 0;
 }

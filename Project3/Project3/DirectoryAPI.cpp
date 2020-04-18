@@ -115,13 +115,17 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	for (int i = 0; i < targetDirectory->subDirectories.size; i++)
 	{
 		newEntry = targetDirectory->subDirectories[i]->getName();
-		newEntry.append(string(newEntry))
-		entryString +=newEntry
+		newEntry.append(string(16 - newEntry.size), '0');
+		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->subDirectories[i]->getID));
+		entryString += newEntry;
 	}
 
 	for (int i = 0; i < targetDirectory->subFiles.size; i++)
 	{
-
+		newEntry = targetDirectory->subFiles[i]->getName();
+		newEntry.append(string(16 - newEntry.size), '0');
+		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->subFiles[i]->getID));
+		entryString += newEntry;
 	}
 	//if size is not big enough to contain all entries
 	if (size < entrySize) {
@@ -141,7 +145,7 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 int DirectoryAPI::Dir_Unlink(string path)
 {
 
-	string h = path.c_str("\\");
+	//string h = path.c_str("\\");
 
 
 	//if path is root directory ("/")
@@ -157,11 +161,6 @@ int DirectoryAPI::Dir_Unlink(string path)
 	}
 
 	return 0;
-}
-
-INode* DirectoryAPI::findDirectory(string path)
-{
-
 }
 
 int DirectoryAPI::getNumDirectories()
