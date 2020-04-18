@@ -1,3 +1,4 @@
+#pragma once
 #include "DirectoryAPI.h"
 #include "DiskAPI.h"
 #include "FileAccessAPI.h"
@@ -8,7 +9,6 @@
 #define NUM_SECTORS 1000
 
 
-#pragma once
 class UMDLibOS
 {
 private:

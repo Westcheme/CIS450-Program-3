@@ -1,32 +1,74 @@
 ﻿  DirectoryAPI.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(41,6): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(41,6): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(42,39): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(42,39): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(45,96): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(45,96): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(47,33): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(47,33): error C2446: '>': no conversion from 'int' to 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(47,31): message : There are no conversions from integral values to pointer-to-member values
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(67,52): error C3867: 'std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>::get': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(115,58): error C3867: 'std::vector<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>,std::allocator<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(115,58): error C2446: '<': no conversion from 'unsigned int (__thiscall std::vector<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>,std::allocator<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>>>::* )(void) noexcept const' to 'int'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(115,54): message : There is no context in which this conversion is possible
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(119,3): error C2146: syntax error: missing ';' before identifier 'entryString'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(120,2): error C2143: syntax error: missing ';' before '}'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(122,52): error C3867: 'std::vector<std::unique_ptr<FileINode,std::default_delete<FileINode>>,std::allocator<std::unique_ptr<FileINode,std::default_delete<FileINode>>>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(122,52): error C2446: '<': no conversion from 'unsigned int (__thiscall std::vector<std::unique_ptr<FileINode,std::default_delete<FileINode>>,std::allocator<std::unique_ptr<FileINode,std::default_delete<FileINode>>>>::* )(void) noexcept const' to 'int'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(122,48): message : There is no context in which this conversion is possible
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(144,28): error C2660: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::c_str': function does not take 1 arguments
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\include\xstring(3575,37): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::c_str'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(163,1): error C2556: 'INode *DirectoryAPI::findDirectory(std::string)': overloaded function differs only by return type from 'std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>> DirectoryAPI::findDirectory(std::string)'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.h(21): message : see declaration of 'DirectoryAPI::findDirectory'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(162,22): error C2040: 'DirectoryAPI::findDirectory': 'INode *(std::string)' differs in levels of indirection from 'std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>> (std::string)'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(176,1): error C2084: function 'std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>> DirectoryAPI::findDirectory(std::string)' already has a body
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(162): message : see previous definition of 'findDirectory'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(177,71): error C3867: 'std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>::get': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(186,5): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(186,5): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(187,38): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(187,38): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(190,57): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(190,57): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(191,60): error C3867: 'DirectoryINode::getNumberSubDirectories': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(191,60): error C2446: '<': no conversion from 'int (__thiscall DirectoryINode::* )(void)' to 'int'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(191,37): message : There is no context in which this conversion is possible
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(193,63): error C3867: 'INode::getName': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(193,63): error C2678: binary '==': no operator found which takes a left-hand operand of type 'overloaded-function' (or there is no acceptable conversion)
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\include\xstring(4376,17): message : could be 'bool std::operator ==<char,std::char_traits<char>,std::allocator<char>>(const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &,const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &) noexcept'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(193,63): message : while trying to match the argument list '(overloaded-function, std::string)'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(204,44): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(204,44): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(205,5): error C3867: 'DirectoryINode::getNumberSubDirectories': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(205,5): error C2296: '-': illegal, left operand has type 'int (__thiscall DirectoryINode::* )(void)'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(207,80): error C3867: 'DirectoryINode::getNumberSubDirectories': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(207,80): error C2296: '-': illegal, left operand has type 'int (__thiscall DirectoryINode::* )(void)'
   DiskAPI.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(34,47): error C3867: 'std::unique_ptr<DataBlock,std::default_delete<DataBlock>>::get': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(146,63): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(146,63): error C2440: '=': cannot convert from 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const' to 'int'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(146,59): message : There is no context in which this conversion is possible
   FileAccessAPI.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(13,3): error C2065: 'osErrMsg': undeclared identifier
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(32,3): error C2065: 'osErrMsg': undeclared identifier
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(37,3): error C2065: 'osErrMsg': undeclared identifier
-  FileSystemAPI.cpp
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(22,38): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(22,38): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(26,20): error C2352: 'DirectoryAPI::findDirectory': illegal call of non-static member function
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.h(21): message : see declaration of 'DirectoryAPI::findDirectory'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(65,38): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(65,38): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(169,28): error C2059: syntax error: ')'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(188,48): error C2352: 'DirectoryAPI::findDirectory': illegal call of non-static member function
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.h(21): message : see declaration of 'DirectoryAPI::findDirectory'
   INode.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
-  main.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\main.cpp(1,10): fatal error C1083: Cannot open include file: 'Simulation.h': No such file or directory
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(79,41): error C3867: 'std::vector<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>,std::allocator<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(79,41): error C2446: '<': no conversion from 'unsigned int (__thiscall std::vector<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>,std::allocator<std::unique_ptr<DirectoryINode,std::default_delete<DirectoryINode>>>>::* )(void) noexcept const' to 'int'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(79,37): message : There is no context in which this conversion is possible
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(84,35): error C3867: 'std::vector<std::unique_ptr<FileINode,std::default_delete<FileINode>>,std::allocator<std::unique_ptr<FileINode,std::default_delete<FileINode>>>>::size': non-standard syntax; use '&' to create a pointer to member
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(84,35): error C2446: '<': no conversion from 'unsigned int (__thiscall std::vector<std::unique_ptr<FileINode,std::default_delete<FileINode>>,std::allocator<std::unique_ptr<FileINode,std::default_delete<FileINode>>>>::* )(void) noexcept const' to 'int'
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(84,31): message : There is no context in which this conversion is possible
   UMDLibOS.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,7): error C2143: syntax error: missing ';' before '<'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.h(11,29): error C2238: unexpected token(s) preceding ';'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\UMDLibOS.cpp(6,9): error C2065: 'diskErrMsg': undeclared identifier
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\UMDLibOS.cpp(14,2): error C3861: 'displayWelcomeMessage': identifier not found
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\UMDLibOS.cpp(23,3): error C3861: 'displaySystemState': identifier not found
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\UMDLibOS.cpp(24,3): error C3861: 'displayUMDLibOSInteractions': identifier not found
+E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\UMDLibOS.cpp(57,5): error C3861: 'println': identifier not found
   Generating Code...
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileSystemAPI.cpp(14): error C4716: 'FileSystemAPI::FS_Boot': must return a value
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileSystemAPI.cpp(33): error C4716: 'FileSystemAPI::FS_Reset': must return a value
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(11): error C4716: 'DiskAPI::Disk_Load': must return a value
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(21): error C4716: 'DiskAPI::Disk_Write': must return a value
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(16): error C4716: 'DiskAPI::Disk_Save': must return a value
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(26): error C4716: 'DiskAPI::Disk_Read': must return a value
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\DiskAPI.cpp(6): error C4716: 'DiskAPI::Disk_Init': must return a value
