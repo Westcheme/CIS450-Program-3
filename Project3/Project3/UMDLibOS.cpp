@@ -125,7 +125,7 @@ void UMDLibOS::print(string _message) {
 }
 
 void UMDLibOS::println(string _message) {
-	cout << _message << "/n'";
+	cout << _message << "\n'";
 }
 
 void UMDLibOS::displayWelcomeMessage() {
@@ -137,6 +137,8 @@ void UMDLibOS::displayWelcomeMessage() {
 
 void UMDLibOS::displaySystemState() {
 	println("CURRENT SYSTEM STATE:");
+	println("OS Error:" + osErrMsg);
+	println("Disk Error:" + diskErrMsg);
 	//if osErrMsg is not null or empty display notification error message exists
 	//if diskErrMsg is not null or empty display notification error message exists
 	//Show current file
@@ -156,4 +158,5 @@ void UMDLibOS::displayUMDLibOSInteractions() {
 	println("10. Call FS_Boot()");
 	println("11. Call FS_Sync()");
 	println("12. Call FS_Reset()");
+	println("13. Clear Error Messages");
 }

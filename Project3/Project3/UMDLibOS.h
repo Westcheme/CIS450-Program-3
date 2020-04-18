@@ -15,6 +15,7 @@ class DirectoryAPI;
 class DiskAPI;
 class FileAccessAPI;
 class FileSystemAPI;
+
 static string osErrMsg;
 static string diskErrMsg;
 static bool fs_available;
