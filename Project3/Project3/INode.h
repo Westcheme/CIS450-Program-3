@@ -8,9 +8,9 @@ using namespace std;
 #define MAX_FILE_SIZE 10
 #define MAX_FILES 100
 
-#ifndef IDCounter
-int IDCounter = 0; //Should only ever be referenced by INode
-#endif // !IDCounter
+
+static int IDCounter = 0; //Should only ever be referenced by INode
+
 
 
 struct DataBlock

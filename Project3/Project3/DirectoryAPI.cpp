@@ -177,7 +177,7 @@ unique_ptr<DirectoryINode> DirectoryAPI::findDirectory(string path)
 	string delimiter = "/";
 	string foundString;
 
-	currentINode.reset(UMDLibOS::rootDirectory.get());
+	currentINode.reset(rootDirectory.get());
 	
 	//iterates through all DirectoryINodes until the desired directory INode is reached
 	//possible valid input to consider:

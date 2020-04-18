@@ -12,15 +12,16 @@
 int FileSystemAPI::FS_Boot()
 {
 	//Currently always creates a new disk if something were to fail
-	UMDLibOS::DISK_API->Disk_Init();
+	DISK_API->Disk_Init();
 
 	if (false /*No current way for this to fail*/) {
+		
 		UMDLibOS::setOSErrorMsg("E_FILE_BOOT");
-		UMDLibOS::fs_available = false;
+		fs_available = false;
 		return -1;
 	}
 
-	UMDLibOS::fs_available = true;
+	fs_available = true;
 
 	return 0;
 }
@@ -30,7 +31,7 @@ int FileSystemAPI::FS_Boot()
 //return 0
 int FileSystemAPI::FS_Sync()
 {
-	UMDLibOS::DISK_API->Disk_Save();
+	DISK_API->Disk_Save();
 	return 0;
 }
 
@@ -46,7 +47,7 @@ int FileSystemAPI::FS_Reset()
 		return -1;
 	}
 
-	UMDLibOS::fs_available = false;
+	fs_available = false;
 
 	return 0;
 }

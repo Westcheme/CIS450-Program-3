@@ -15,12 +15,20 @@ class DirectoryAPI;
 class DiskAPI;
 class FileAccessAPI;
 class FileSystemAPI;
+static string osErrMsg;
+static string diskErrMsg;
+static bool fs_available;
+static FileAccessAPI* FA_API;
+static FileSystemAPI* FS_API;
+static DirectoryAPI* DIR_API;
+static DiskAPI* DISK_API;
+static bool DiskSectorBitmap[NUM_SECTORS];
+static bool INodeBitmap[NUM_SECTORS];
+static unique_ptr<DirectoryINode> rootDirectory;
 
 class UMDLibOS
 {
 private:
-	static string osErrMsg;
-	static string diskErrMsg;
 	static void print(string message);
 	static void println(string message);
 	static void displayWelcomeMessage();
@@ -28,14 +36,6 @@ private:
 	static void displayUMDLibOSInteractions();
 public:
 	UMDLibOS();
-	static bool fs_available;
-	static FileAccessAPI* FA_API;
-	static FileSystemAPI* FS_API;
-	static DirectoryAPI* DIR_API;
-	static DiskAPI* DISK_API;
-	static unique_ptr<DirectoryINode> rootDirectory;
-	static bool DiskSectorBitmap[NUM_SECTORS];
-	static bool INodeBitmap[NUM_SECTORS];
 	static void inputSeekingLoop();
 	static string getDiskErrorMsg();
 	static string getOSErrorMsg();

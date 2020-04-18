@@ -7,12 +7,12 @@ using namespace std;
 #define MAGIC_NUMBER '4'
 
 class UMDLibOS;
+static unique_ptr<DataBlock> externalDiskSectors[NUM_SECTORS];
+static unique_ptr<DataBlock> workingDiskSectors[NUM_SECTORS];
 
 class DiskAPI
 {
 private:
-	static unique_ptr<DataBlock> externalDiskSectors[NUM_SECTORS];
-	static unique_ptr<DataBlock> workingDiskSectors[NUM_SECTORS];
 public:
 	static int Disk_Init();
 	static int Disk_Load();

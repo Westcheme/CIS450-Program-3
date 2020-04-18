@@ -18,7 +18,7 @@ FileAccessAPI::FileAccessAPI()
 //Failure: return -1 and set osErrMsg to E_FILE_CREATE
 int FileAccessAPI::File_Create(string file)
 {
-	if (!UMDLibOS::fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -68,7 +68,7 @@ int FileAccessAPI::File_Create(string file)
 //If there are already maximum number of files open, return -1 and set osErrMsg to E_TOO_MANY_OPEN_FILES
 int FileAccessAPI::File_Open(string file)
 {
-	if (!UMDLibOS::fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -102,7 +102,7 @@ int FileAccessAPI::File_Open(string file)
 //If the file pointer is already at the end of the file, zero should be returned.
 int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 {
-	if (!UMDLibOS::fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -137,7 +137,7 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 //If the file exceeds the maximum file size, return -1 and set osErrMsg to E_FILE_TOO_BIG.
 int FileAccessAPI::File_Write(int fd, string buffer, int size)
 {
-	if (!UMDLibOS::fs_available)
+	if (fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -166,7 +166,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 //Success: return the new location of the file pointer.
 int FileAccessAPI::File_Seek(int fd, int offset)
 {
-	if (!UMDLibOS::fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -180,7 +180,7 @@ int FileAccessAPI::File_Seek(int fd, int offset)
 //Success: return 0
 int FileAccessAPI::File_Close(int fd)
 {
-	if (!UMDLibOS::fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -192,7 +192,7 @@ int FileAccessAPI::File_Close(int fd)
 //
 int FileAccessAPI::File_Unlink(string file)
 {
-	if (!UMDLibOS::fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
