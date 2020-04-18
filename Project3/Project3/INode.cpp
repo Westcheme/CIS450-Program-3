@@ -7,10 +7,6 @@ INode::INode()
 	IDCounter++;
 	size = 0;
 	name = "";
-	for (int i = 0; i < MAX_FILE_SIZE; i++)
-	{
-		dataBlocks[i] = NULL;
-	}
 	numberDataBlocks = 0;
 }
 
