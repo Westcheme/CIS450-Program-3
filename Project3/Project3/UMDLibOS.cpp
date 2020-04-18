@@ -1,4 +1,7 @@
 #include "UMDLibOS.h"
+#include "DiskAPI.h"
+#include "FileAccessAPI.h"
+#include "FileSystemAPI.h"
 
 UMDLibOS::UMDLibOS()
 {
@@ -91,6 +94,11 @@ void UMDLibOS::setOSErrorMsg(string _osErrMsg)
 	osErrMsg = _osErrMsg;
 }
 
+bool UMDLibOS::fileSystemAccessible()
+{
+	return fs_available;
+}
+
 int UMDLibOS::hexToDecimal(string hex)
 {
 	int decimal;
@@ -110,22 +118,22 @@ string UMDLibOS::decimalToHex(int decimal)
 
 ////UTILITY METHODS BELOW
 
-void print(string _message) {
+void UMDLibOS::print(string _message) {
 	cout << _message;
 }
 
-void println(string _message) {
+void UMDLibOS::println(string _message) {
 	cout << _message << "/n'";
 }
 
-void displayWelcomeMessage() {
+void UMDLibOS::displayWelcomeMessage() {
 	println("Welcome to UMDLibOS!");
 	println("In this program, you will be interacting with UMDLibOS");
 	println("Please enter an integer from the list below");
 
 }
 
-void displaySystemState() {
+void UMDLibOS::displaySystemState() {
 	println("CURRENT SYSTEM STATE:");
 	//if osErrMsg is not null or empty display notification error message exists
 	//if diskErrMsg is not null or empty display notification error message exists
@@ -133,7 +141,7 @@ void displaySystemState() {
 	//Show open files
 }
 
-void displayUMDLibOSInteractions() {
+void UMDLibOS::displayUMDLibOSInteractions() {
 	println("1. Create File");
 	println("2. Open File");
 	println("3. Read File");

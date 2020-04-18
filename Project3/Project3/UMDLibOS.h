@@ -1,19 +1,32 @@
-#include "DirectoryAPI.h"
-#include "DiskAPI.h"
-#include "FileAccessAPI.h"
-#include "FileSystemAPI.h"
+#pragma once
+#include "INode.h"
+#include <string>
+#include <iostream>
+#include <istream>
 #include <sstream>
+#include <vector>
 
 #define MAX_FILES_AND_DIRECTORIES 100
 #define NUM_SECTORS 1000
 
 
 #pragma once
+
+class DirectoryAPI;
+class DiskAPI;
+class FileAccessAPI;
+class FileSystemAPI;
+
 class UMDLibOS
 {
 private:
 	static string osErrMsg;
 	static string diskErrMsg;
+	static void print(string message);
+	static void println(string message);
+	static void displayWelcomeMessage();
+	static void displaySystemState();
+	static void displayUMDLibOSInteractions();
 public:
 	UMDLibOS();
 	static bool fs_available;

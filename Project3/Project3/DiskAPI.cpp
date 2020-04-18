@@ -1,4 +1,5 @@
 #include "DiskAPI.h"
+#include "UMDLibOS.h"
 
 int DiskAPI::Disk_Init()
 {
@@ -31,7 +32,7 @@ int DiskAPI::Disk_Init()
 	superBlock->size = SECTOR_SIZE;
 	superBlock->byteStream = MAGIC_NUMBER;
 	superBlock->size = 1;
-	assignDataBlockToDiskSector(0, superBlock.get);
+	assignDataBlockToDiskSector(0, superBlock);
 
 	return 0;
 }
@@ -140,9 +141,9 @@ int DiskAPI::Disk_Read(int sector, string& buffer)
 
 //HELPER METHODS BELOW
 
-void DiskAPI::assignDataBlockToDiskSector(int sector, unique_ptr<DataBlock> dataBlock) {
+void DiskAPI::assignDataBlockToDiskSector(int sector, unique_ptr<DataBlock>& dataBlock) {
 	workingDiskSectors[sector]->byteStream = dataBlock->byteStream;
 	workingDiskSectors[sector]->ID = sector;
-	workingDiskSectors[sector]->size = dataBlock->byteStream.size;
+	workingDiskSectors[sector]->size = dataBlock->byteStream.size();
 	UMDLibOS::DiskSectorBitmap[sector] = 1;
 }

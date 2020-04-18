@@ -63,6 +63,6 @@ public:
 	int getNumberSubDirectories();
 	void setNumberSubDirectories(int quantity);
 	void addSubFile(unique_ptr<FileINode> subFile);
-	void addSubDirectory(unique_ptr<DirectoryINode> subDirectory);
+	void addSubDirectory(unique_ptr<DirectoryINode>& subDirectory);
 	int getSize();
 };

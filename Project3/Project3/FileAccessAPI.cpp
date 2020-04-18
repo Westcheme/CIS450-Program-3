@@ -26,11 +26,11 @@ int FileAccessAPI::File_Create(string file)
 	}
 
 	if (file[file.length() - 1] == '/')
-		file = file.substr(0, file.size - 1);
+		file = file.substr(0, file.size() - 1);
 
 	string path = file.substr(0, file.find_last_of('/'));
 
-	if (UMDLibOS::DIR_API->findDirectory(path) == NULL)
+	if (DirectoryAPI::findDirectory(path) == NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
 		cout << "The path does not exist, file was not created";
@@ -113,14 +113,18 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 		UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
 		return -1;
 	}
-	else if (filePointer[fd] == openFiles[fd]->get->size - 1);
-	else if(size <= openFiles[fd]->get->size)
+	else if (filePointer[fd] == (openFiles.at(fd)->getSize() - 1))
+	{
+		
+
+	}
+	else if (size <= openFiles[fd]->getSize())
 	{
 		filePointer[fd] += size;
 	}
-	else if (size > openFiles[fd]->get->size)
+	else if (size > openFiles[fd]->getSize())
 	{
-		filePointer[fd] += openFiles[fd]->get->size;
+		filePointer[fd] += openFiles[fd]->getSize();
 	}
 }
 
@@ -144,7 +148,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 		UMDLibOS::setOSErrorMsg("E_BAD_FD");
 		return -1;
 	}
-	else if (openFiles[fd]->get->size > MAX_FILE_SIZE)
+	else if (openFiles[fd]->getSize() > MAX_FILE_SIZE)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_TOO_BIG");
 		return -1;
@@ -199,9 +203,9 @@ int FileAccessAPI::File_Unlink(string file)
 
 //HEPLER METHODS BELOW:
 
-unique_ptr<FileINode>* FileAccessAPI::findFile(string file)
+unique_ptr<FileINode> FileAccessAPI::findFile(string file)
 {
-
+	return NULL;
 }
 
 int FileAccessAPI::getNumFiles()

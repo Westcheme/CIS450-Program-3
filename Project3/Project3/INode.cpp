@@ -36,7 +36,7 @@ void DirectoryINode::addSubFile(unique_ptr<FileINode> subFile)
 	subFiles.push_back(subFile);
 }
 
-void DirectoryINode::addSubDirectory(unique_ptr<DirectoryINode> subDirectory)
+void DirectoryINode::addSubDirectory(unique_ptr<DirectoryINode>& subDirectory)
 {
 	subDirectories.push_back(subDirectory);
 }
@@ -76,12 +76,12 @@ int INode::getID()
 int DirectoryINode::getSize()
 {
 	int size = 0;
-	for (int i = 0; i < subDirectories.size; i++)
+	for (int i = 0; i < subDirectories.size(); i++)
 	{
 		size += subDirectories[i]->getSize();
 	}
 
-	for (int i = 0; i < subFiles.size; i++)
+	for (int i = 0; i < subFiles.size(); i++)
 	{
 		size += subFiles[i]->getSize();
 	}

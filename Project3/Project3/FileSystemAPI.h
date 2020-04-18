@@ -1,5 +1,7 @@
 #pragma once
-#include "UMDLibOS.h"
+
+class UMDLibOS;
+
 class FileSystemAPI
 {
 public:

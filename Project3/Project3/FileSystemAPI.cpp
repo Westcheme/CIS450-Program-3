@@ -1,5 +1,6 @@
 #include "FileSystemAPI.h"
-
+#include "DiskAPI.h"
+#include "UMDLibOS.h"
 
 //ANY ACCESS ATTEMPT WHILE FILE SYSTEM IS UNAVAILABLE return -1 and set osErrMsg to E_INVALID_ACCESS_ATTEMPT
 
