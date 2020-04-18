@@ -25,6 +25,11 @@ int DirectoryINode::getNumberSubDirectories()
 	return numberSubDirectories;
 }
 
+int DirectoryINode::getNumberSubFiles()
+{
+	return numberSubFiles;
+}
+
 void DirectoryINode::setNumberSubDirectories(int quantity)
 {
 	numberSubDirectories = quantity;
@@ -33,12 +38,14 @@ void DirectoryINode::setNumberSubDirectories(int quantity)
 void DirectoryINode::addSubFile(unique_ptr<FileINode> subFile)
 {
 	size += subFile->getSize();
-	subFiles.push_back(subFile);
+	subFiles[numberSubFiles].reset(subFile.get());
+	numberSubFiles++;
 }
 
-void DirectoryINode::addSubDirectory(unique_ptr<DirectoryINode>& subDirectory)
+void DirectoryINode::addSubDirectory(unique_ptr<DirectoryINode> subDirectory)
 {
-	subDirectories.push_back(subDirectory);
+	subDirectories[numberSubDirectories].reset(subDirectory.get());
+	numberSubDirectories++;
 }
 
 
@@ -59,8 +66,8 @@ int INode::getNumberDataBlocks()
 
 void INode::assignDataBlock(unique_ptr<DataBlock> dataBlock)
 {
+	dataBlocks[numberDataBlocks].reset(dataBlock.get());
 	numberDataBlocks++;
-	dataBlocks.push_back(dataBlock);
 }
 
 int INode::getSize()
@@ -76,12 +83,12 @@ int INode::getID()
 int DirectoryINode::getSize()
 {
 	int size = 0;
-	for (int i = 0; i < subDirectories.size(); i++)
+	for (int i = 0; i < numberSubDirectories; i++)
 	{
 		size += subDirectories[i]->getSize();
 	}
 
-	for (int i = 0; i < subFiles.size(); i++)
+	for (int i = 0; i < numberSubFiles; i++)
 	{
 		size += subFiles[i]->getSize();
 	}

@@ -9,7 +9,6 @@
 #define MAX_FILES_AND_DIRECTORIES 100
 #define NUM_SECTORS 1000
 
-
 #pragma once
 
 class DirectoryAPI;

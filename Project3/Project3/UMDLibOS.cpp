@@ -5,6 +5,8 @@
 
 UMDLibOS::UMDLibOS()
 {
+	osErrMsg = "";
+	diskErrMsg = "";
 	FA_API = new FileAccessAPI;
 	fs_available = false;
 }

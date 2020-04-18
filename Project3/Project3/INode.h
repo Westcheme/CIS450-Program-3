@@ -8,7 +8,10 @@ using namespace std;
 #define MAX_FILE_SIZE 10
 #define MAX_FILES 100
 
+#ifndef IDCounter
 int IDCounter = 0; //Should only ever be referenced by INode
+#endif // !IDCounter
+
 
 struct DataBlock
 {
@@ -29,7 +32,7 @@ protected:
 	int ID;
 	string name; //In a real Linux file system, the name of the file would not be stored in the INode, but 
 	string fileType;
-	vector<unique_ptr<DataBlock>> dataBlocks; //Maximum number of 10 referenced by an INode
+	unique_ptr<DataBlock> dataBlocks[10]; //Maximum number of 10 referenced by an INode
 	int numberDataBlocks;
 public:
 	INode();
@@ -58,11 +61,12 @@ private:
 	int numberSubDirectories = 0;
 public:
 	DirectoryINode();
-	vector <unique_ptr<FileINode>> subFiles;
-	vector<unique_ptr<DirectoryINode>> subDirectories;
+	unique_ptr<FileINode>* subFiles;
+	unique_ptr<DirectoryINode>* subDirectories;
 	int getNumberSubDirectories();
+	int getNumberSubFiles();
 	void setNumberSubDirectories(int quantity);
 	void addSubFile(unique_ptr<FileINode> subFile);
-	void addSubDirectory(unique_ptr<DirectoryINode>& subDirectory);
+	void addSubDirectory(unique_ptr<DirectoryINode> subDirectory);
 	int getSize();
 };

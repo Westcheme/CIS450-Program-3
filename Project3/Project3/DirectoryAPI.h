@@ -2,6 +2,8 @@
 #include "UMDLibOS.h"
 using namespace std;
 
+class UMDLibOS;
+
 class DirectoryAPI
 {
 private:

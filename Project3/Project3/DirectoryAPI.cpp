@@ -1,3 +1,4 @@
+#pragma once
 #include "DirectoryAPI.h"
 
 DirectoryAPI::DirectoryAPI()
@@ -64,7 +65,7 @@ int DirectoryAPI::Dir_Create(string path)
 
 		newDirectory->setName(newDirectoryName);
 
-		parentDirectory->addSubDirectory(newDirectory);
+		parentDirectory->addSubDirectory(unique_ptr<DirectoryINode>(newDirectory.get()));
 
 		numDirectories++;
 
@@ -111,7 +112,7 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	}
 
 
-	for (int i = 0; i < targetDirectory->subDirectories.size(); i++)
+	for (int i = 0; i < targetDirectory.get()->getNumberSubDirectories(); i++)
 	{
 		newEntry = targetDirectory->subDirectories[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
@@ -119,7 +120,7 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 		entryString += newEntry;
 	}
 
-	for (int i = 0; i < targetDirectory->subFiles.size(); i++)
+	for (int i = 0; i < targetDirectory.get()->getNumberSubFiles(); i++)
 	{
 		newEntry = targetDirectory->subFiles[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
