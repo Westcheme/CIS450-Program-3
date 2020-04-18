@@ -1,10 +1,6 @@
 #include "DirectoryAPI.h"
 
-//Dir_Create() creates a new directory as named by path.
-//All paths are absolute paths
-//Dir_Create() is not recursive. Parent directories must exist.
-//Upon failure of any kind, return -1 and set osErrMsg to E_DIR_CREATE. Upon success, return 0.
-int DirectoryAPI::Dir_Create(string path)
+
 DirectoryAPI::DirectoryAPI()
 {
 	numDirectories = 0;
@@ -20,9 +16,9 @@ int DirectoryAPI::Dir_Create(string path)
 {
 	if (path.length() > 256) cout << "Path cannot be greater than 256 characters, directory was not created";
 	else if (path == "") cout << "Path name cannot be empty string, direcetory was not created";
-	else if (findFile(path) >= 0)	//TODO: Must find if there is a directory of the same name only in the current directory, if found do not create directory, cannot have duplicate directories
+	else if (findDirectory(path) >= 0)	//TODO: Must find if there is a directory of the same name only in the current directory, if found do not create directory, cannot have duplicate directories
 	{
-		setOSErrorMsg("E_DIR_CREATE");
+		UMDLibOS::setOSErrorMsg("E_DIR_CREATE");
 		return -1;
 	}
 	else
@@ -66,6 +62,8 @@ int DirectoryAPI::Dir_Read(string path, string buffer, int size)
 int DirectoryAPI::Dir_Unlink(string path)
 {
 
+	string h = path.c_str("\\");
+
 
 	//if path is root directory ("/")
 	if (!(path.compare("/"))) { //compare should return 0 when two strings are the same, -1 if path is comes first alphabetically, 1 if after
@@ -80,6 +78,11 @@ int DirectoryAPI::Dir_Unlink(string path)
 	}
 
 	return 0;
+}
+
+INode* DirectoryAPI::findDirectory(string path)
+{
+
 }
 
 int DirectoryAPI::getNumDirectories()

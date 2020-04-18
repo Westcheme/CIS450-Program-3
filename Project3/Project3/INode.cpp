@@ -5,7 +5,10 @@ INode::INode()
 {
 	size = 0;
 	name = "";
-	dataBlocks = NULL;
+	for (int i = 0; i < MAX_FILE_SIZE; i++)
+	{
+		dataBlocks[i] = NULL;
+	}
 	numberDataBlocks = 0;
 }
 

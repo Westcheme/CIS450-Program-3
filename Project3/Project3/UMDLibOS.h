@@ -13,6 +13,8 @@ private:
 	static string osErrMsg;
 	static string diskErrMsg;
 public:
+	bool INodeBitmap[NUM_SECTORS];
+	bool DiskSectorBitmap[NUM_SECTORS];
 	static void inputSeekingLoop();
 	static string getDiskErrorMsg();
 	static string getOSErrorMsg();
