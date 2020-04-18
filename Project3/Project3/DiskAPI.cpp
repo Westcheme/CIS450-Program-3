@@ -15,15 +15,15 @@ int DiskAPI::Disk_Init()
 		dataBlock->ID = i;
 		dataBlock->size = 0;
 
-		externalDiskSectors[i]->get = dataBlock;
-		workingDiskSectors[i]->get = dataBlock;
+		externalDiskSectors[i].reset(dataBlock);
+		workingDiskSectors[i].reset(dataBlock);
 	}
-
+	
 	//Create the root directory if one does not already exist
-	if (rootDirectory == NULL) {
-		rootDirectory->get = new DirectoryINode;
-		rootDirectory->get->setName("Root");
-		INodeBitmap[0] = 1;
+	if (UMDLibOS::rootDirectory == NULL) {
+		UMDLibOS::rootDirectory.reset(new DirectoryINode);
+		UMDLibOS::rootDirectory->setName("Root");
+		UMDLibOS::INodeBitmap[0] = 1;
 	}
 
 	//Crate the super block and store it to disk sector 0
@@ -41,12 +41,12 @@ int DiskAPI::Disk_Init()
 int DiskAPI::Disk_Load()
 {
 
-	if (externalDiskSectors == NULL || externalDiskSectors[0]->get == NULL) //if external disk has a super block, load into working disk
+	if (externalDiskSectors == NULL || externalDiskSectors[0] == NULL) //if external disk has a super block, load into working disk
 	{
 		return -1;
 	}
 	else {
-		if (externalDiskSectors[0]->get->byteStream[0] == MAGIC_NUMBER) {
+		if (externalDiskSectors[0]->byteStream[0] == MAGIC_NUMBER) {
 			return -1;
 		}
 	}
@@ -59,24 +59,18 @@ int DiskAPI::Disk_Load()
 	//Copy DataBlocks from externalDisk into workingDisk
 	for (int i = 0; i < NUM_SECTORS; i++) 
 	{
-		if(externalDiskSectors[i]->get != NULL)
+		if(externalDiskSectors[i] != NULL)
 		{
-			DataBlock tempBlock;
 
-			tempBlock.byteStream = externalDiskSectors[i]->get->byteStream;
-			tempBlock.ID = externalDiskSectors[i]->get->ID;
-			tempBlock.size = externalDiskSectors[i]->get->size;
-
-			workingDiskSectors[i]->get = tempBlock;
+			workingDiskSectors[i]->byteStream = externalDiskSectors[i]->byteStream;
+			workingDiskSectors[i]->ID = externalDiskSectors[i]->ID;
+			workingDiskSectors[i]->size = externalDiskSectors[i]->size;
 		}
 		else
 		{
-			DataBlock tempBlock;
-			tempBlock.byteStream = zeroString;
-			tempBlock.ID = i;
-			tempBlock.size = 0;
-
-			workingDiskSectors[i]->get = tempBlock;
+			workingDiskSectors[i]->byteStream = zeroString;
+			workingDiskSectors[i]->ID = i;
+			workingDiskSectors[i]->size = 0;
 		}
 	}
 	return 0;
@@ -96,24 +90,17 @@ int DiskAPI::Disk_Save()
 	//Copy DataBlocks from workingDisk into externalDisk
 	for (int i = 0; i < NUM_SECTORS; i++)
 	{
-		if (workingDiskSectors[i]->get != NULL)
+		if (workingDiskSectors[i] != NULL)
 		{
-			DataBlock tempBlock;
-
-			tempBlock.byteStream = workingDiskSectors[i]->get->byteStream;
-			tempBlock.ID = workingDiskSectors[i]->get->ID;
-			tempBlock.size = workingDiskSectors[i]->get->size;
-
-			externalDiskSectors[i]->get = tempBlock;
+			externalDiskSectors[i]->byteStream = workingDiskSectors[i]->byteStream;
+			externalDiskSectors[i]->ID = workingDiskSectors[i]->ID;
+			externalDiskSectors[i]->size = workingDiskSectors[i]->size;
 		}
 		else
 		{
-			DataBlock tempBlock;
-			tempBlock.byteStream = zeroString;
-			tempBlock.ID = i;
-			tempBlock.size = 0;
-
-			externalDiskSectors[i]->get = tempBlock;
+			externalDiskSectors[i]->byteStream = zeroString;
+			externalDiskSectors[i]->ID = i;
+			externalDiskSectors[i]->size = 0;
 		}
 	}
 
@@ -131,29 +118,31 @@ int DiskAPI::Disk_Write(int sector, string buffer)
 		return -1;
 	}
 
-	workingDiskSectors[sector]->get->byteStream = buffer;
+	workingDiskSectors[sector]->byteStream = buffer;
 
 	return 0;
 }
 
 //This method reads a specified sector into a specified buffer. The buffer and sector are assumed to be the same size.
-int DiskAPI::Disk_Read(int sector, string* buffer)
+int DiskAPI::Disk_Read(int sector, string& buffer)
 {
 	//If the indicated sector is out of bounds, or the buffer is null,
 	//set the diskErrMsg attribute in Simulation to "E_READ_INVALID_PARAM"
-	if (sector < 0 || sector > NUM_SECTORS || buffer == NULL) {
+	if (sector < 0 || sector > NUM_SECTORS /*|| buffer == NULL/*buffer cannot be NULL*\/*/) {
 		UMDLibOS::setDiskErrorMsg("E_READ_INVALID_PARAM");
 		return -1;
 	}
 
-	buffer = workingDiskSectors[sector]->get->byteStream;
+	buffer = workingDiskSectors[sector]->byteStream;
 
 	return 0;
 }
 
 //HELPER METHODS BELOW
 
-void DiskAPI::assignDataBlockToDiskSector(int sector, unique_ptr<DataBlock>* dataBlock) {
-	workingDiskSectors[sector] = dataBlock;
-	DiskSectorBitmap[sector] = 1;
+void DiskAPI::assignDataBlockToDiskSector(int sector, unique_ptr<DataBlock> dataBlock) {
+	workingDiskSectors[sector]->byteStream = dataBlock->byteStream;
+	workingDiskSectors[sector]->ID = sector;
+	workingDiskSectors[sector]->size = dataBlock->byteStream.size;
+	UMDLibOS::DiskSectorBitmap[sector] = 1;
 }

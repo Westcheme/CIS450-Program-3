@@ -3,15 +3,11 @@
 
 INode::INode()
 {
+	ID = IDCounter;
+	IDCounter++;
 	size = 0;
 	name = "";
-	dataBlocks = NULL;
 	numberDataBlocks = 0;
-}
-
-INode::~INode() 
-{
-	delete[numberDataBlocks] dataBlocks;
 }
 
 FileINode::FileINode()
@@ -22,18 +18,74 @@ FileINode::FileINode()
 DirectoryINode::DirectoryINode()
 {
 	fileType = "Directory";
-	subDirectories = NULL;
-	subFiles = NULL;
 }
 
-DirectoryINode::~DirectoryINode()
+int DirectoryINode::getNumberSubDirectories()
 {
-	delete[numberSubFiles] subFiles;
-	delete[numberSubDirectories] subDirectories;
+	return numberSubDirectories;
+}
+
+void DirectoryINode::setNumberSubDirectories(int quantity)
+{
+	numberSubDirectories = quantity;
+}
+
+void DirectoryINode::addSubFile(unique_ptr<FileINode> subFile)
+{
+	size += subFile->getSize();
+	subFiles.push_back(subFile);
+}
+
+void DirectoryINode::addSubDirectory(unique_ptr<DirectoryINode> subDirectory)
+{
+	subDirectories.push_back(subDirectory);
 }
 
 
 void INode::setName(string _name)
 {
 	name = _name;
+}
+
+string INode::getName()
+{
+	return name;
+}
+
+int INode::getNumberDataBlocks()
+{
+	return numberDataBlocks;
+}
+
+void INode::assignDataBlock(unique_ptr<DataBlock> dataBlock)
+{
+	numberDataBlocks++;
+	dataBlocks.push_back(dataBlock);
+}
+
+int INode::getSize()
+{
+	return size;
+}
+
+int INode::getID()
+{
+	return ID;
+}
+
+int DirectoryINode::getSize()
+{
+	int size = 0;
+	for (int i = 0; i < subDirectories.size; i++)
+	{
+		size += subDirectories[i]->getSize();
+	}
+
+	for (int i = 0; i < subFiles.size; i++)
+	{
+		size += subFiles[i]->getSize();
+	}
+
+	return size;
+
 }

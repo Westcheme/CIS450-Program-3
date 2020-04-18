@@ -81,6 +81,23 @@ void UMDLibOS::setOSErrorMsg(string _osErrMsg)
 	osErrMsg = _osErrMsg;
 }
 
+int UMDLibOS::hexToDecimal(string hex)
+{
+	int decimal;
+	stringstream ss;
+	ss << hex; // std::string hex_value
+	ss >> std::hex >> decimal; //int decimal_value
+	return decimal;
+}
+
+string UMDLibOS::decimalToHex(int decimal)
+{
+	stringstream ss;
+	ss << std::hex << decimal; // int decimal_value
+	string res(ss.str());
+	return res;
+}
+
 ////UTILITY METHODS BELOW
 
 void print(string _message) {
