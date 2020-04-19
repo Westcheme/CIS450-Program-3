@@ -167,7 +167,7 @@ namespace UMDLibOSUnitTest
 		}
 
 		//Test Method template
-		TEST_METHOD(Create_Directory_In_Sub_Dir)
+		TEST_METHOD(Dir_Create_In_Sub_Dir)
 		{
 			//arrange
 			string parentPath = "/testDirectory";
@@ -203,7 +203,7 @@ namespace UMDLibOSUnitTest
 		}
 
 		//Test Method template
-		TEST_METHOD(Create_Directory_NAME_LENGTH_ERROR)
+		TEST_METHOD(Dir_Create_NAME_LENGTH_ERROR)
 		{
 			//arrange
 			string expectedOSErrorMsg = "E_DIR_CREATE";
@@ -216,6 +216,85 @@ namespace UMDLibOSUnitTest
 			//assert
 			Assert::AreEqual(expectedOSErrorMsg, UMDLibOS::getOSErrorMsg());
 
+		}
+
+		TEST_METHOD(Dir_Size_NO_ERROR_No_Files)
+		{
+			//arrange
+			string parentPath = "/testDirectory";
+			string subPath = parentPath + "/testSub";
+			int actualReturn, expectedReturn = 0;
+			DirectoryINode* returnedDirectory = NULL;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DirectoryAPI::Dir_Create(parentPath);
+			DirectoryAPI::Dir_Create(subPath);
+			actualReturn = DirectoryAPI::Dir_Size(subPath);
+
+			//assert
+			Assert::AreEqual(expectedReturn, actualReturn);
+		}
+
+		TEST_METHOD(Dir_Read_NO_ERROR_No_Files)
+		{
+			//arrange
+			string parentPath = "/testDirectory";
+			string subPath = parentPath + "/testSub";
+			string expectedBufferContent = "testSub/00000000";
+			string buffer;
+			int actualReturn, expectedReturn = 0;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DirectoryAPI::Dir_Create(parentPath);
+			DirectoryAPI::Dir_Create(subPath);
+			actualReturn = DirectoryAPI::Dir_Read(parentPath, buffer, 20);
+
+			//assert
+			Assert::AreEqual(expectedBufferContent, buffer.substr(0, buffer.length()-4));
+		}
+
+		TEST_METHOD(Dir_Read_BUFFER_TOO_SMALL_No_Files)
+		{
+			//arrange
+			string parentPath = "/testDirectory";
+			string subPath = parentPath + "/testSub";
+			string buffer;
+			int actualReturn, expectedReturn = -1;
+			DirectoryINode* returnedDirectory = NULL;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DirectoryAPI::Dir_Create(parentPath);
+			DirectoryAPI::Dir_Create(subPath);
+			actualReturn = DirectoryAPI::Dir_Read(parentPath, buffer, 0);
+
+			//assert
+			Assert::AreEqual(expectedReturn, actualReturn);
+		}
+
+		//Test Method template
+		TEST_METHOD(Dir_Unlink_NO_ERROR)
+		{
+			//arrange
+			string parentPath = "/testDirectory";
+			string subPath = parentPath + "/testSub";
+			DirectoryINode* returnedDirectory = NULL;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DirectoryAPI::Dir_Create(parentPath);
+			DirectoryAPI::Dir_Create(subPath);
+			DirectoryAPI::Dir_Unlink(subPath);
+			returnedDirectory = DirectoryAPI::findDirectory(subPath);
+
+			//assert
+			Assert::IsNull(returnedDirectory);
 		}
 
 		//Verify that decimal to hex conversion is correct

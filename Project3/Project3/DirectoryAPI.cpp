@@ -104,7 +104,6 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	DirectoryINode* targetDirectory;
 	string newEntry = "";
 	string entryString = "";
-	int entrySize = 0;
 
 	targetDirectory = findDirectory(path);
 
@@ -120,7 +119,9 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	{
 		newEntry = targetDirectory->subDirectories[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
-		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->subDirectories[i]->getID()));
+		string hexString = UMDLibOS::decimalToHex(targetDirectory->subDirectories[i]->getID());
+		hexString = string(4 - hexString.length(), '0').append(hexString);
+		newEntry.append(hexString);
 		entryString += newEntry;
 	}
 
@@ -128,18 +129,20 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	{
 		newEntry = targetDirectory->subFiles[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
-		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->subFiles[i]->getID()));
+		string hexString = UMDLibOS::decimalToHex(targetDirectory->subFiles[i]->getID());
+		hexString = string(4 - hexString.length(), '0').append(hexString);
+		newEntry.append(hexString);
 		entryString += newEntry;
 	}
 	//if size is not big enough to contain all entries
-	if (size < entrySize) {
+	if (size < entryString.length()) {
 		UMDLibOS::setOSErrorMsg("E_BUFFER_TOO_SMALL");
 		return -1;
 	}
 
 	buffer = entryString;
 
-	return entrySize;
+	return 0;
 }
 
 //Removes a directory referred to by path, freeing up its inode and data blocks
@@ -148,21 +151,34 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 //If someone tries to remove the root directory ("/"), don't allow them to do it! Return -1 and set osErrMsg to E_DEL_ROOT_DIR.
 int DirectoryAPI::Dir_Unlink(string path)
 {
-
-	//string h = path.c_str("\\");
-
-
 	//if path is root directory ("/")
 	if (!(path.compare("/"))) { //compare should return 0 when two strings are the same, -1 if path is comes first alphabetically, 1 if after
+		cout << "You can't unlink the root directory";
 		UMDLibOS::setOSErrorMsg("E_DEL_ROOT_DIR");
 		return -1;
 	}
 
+	string parentPath = path.substr(0, path.find_last_of("/") + 1);
+	DirectoryINode* parentDirectory = findDirectory(parentPath);
+
+	DirectoryINode* targetDirectory = findDirectory(path);
+
+	if (targetDirectory == NULL)
+	{
+		cout << "Target Directory does not exist.";
+		UMDLibOS::setOSErrorMsg("E_DEL_DIR_NOT_FOUND");
+		return -1;
+	}
+
 	//Check if directory is empty
-	if (false/*TODO: CHECK IF DIRECTORY IS EMPTY*/) {
+	if (targetDirectory->getNumberSubDirectories() != 0 && targetDirectory->getNumberSubFiles() != 0) {
+		cout << "Unable to unlink. Directory not empty";
 		UMDLibOS::setOSErrorMsg("DIR_NOT_EMPTY");
 		return -1;
 	}
+
+	//update number of directories in parent/adjust pointerArray
+	parentDirectory->removeSubDirectory(targetDirectory->getName());
 
 	return 0;
 }

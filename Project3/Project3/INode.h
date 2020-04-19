@@ -11,8 +11,6 @@ using namespace std;
 
 static int IDCounter = 0; //Should only ever be referenced by INode
 
-
-
 struct DataBlock
 {
 public: 
@@ -32,14 +30,15 @@ protected:
 	int ID;
 	string name; //In a real Linux file system, the name of the file would not be stored in the INode, but 
 	string fileType;
-	DataBlock* dataBlocks[10]; //Maximum number of 10 referenced by an INode
+	int dataBlocks[10]; //Maximum number of 10 referenced by an INode
 	int numberDataBlocks;
 public:
 	INode();
 	void setName(string name);
 	string getName();
 	int getNumberDataBlocks();
-	void assignDataBlock(DataBlock* dataBlock);
+	void assignDataBlock(int dataBlockID);
+	int* getAssignedDataBlocks(int& size);
 	int getSize();
 	int getID();
 };
@@ -64,9 +63,11 @@ public:
 	FileINode* subFiles[100];
 	DirectoryINode* subDirectories[100];
 	int getNumberSubDirectories();
+	int getNumbersubFiles();
 	int getNumberSubFiles();
 	void setNumberSubDirectories(int quantity);
 	void addSubFile(FileINode* subFile);
 	void addSubDirectory(DirectoryINode* subDirectory);
 	int getSize();
+	void removeSubDirectory(string name);
 };

@@ -1,6 +1,5 @@
 #include "INode.h"
 
-
 INode::INode()
 {
 	ID = IDCounter;
@@ -23,6 +22,11 @@ DirectoryINode::DirectoryINode()
 int DirectoryINode::getNumberSubDirectories()
 {
 	return numberSubDirectories;
+}
+
+int DirectoryINode::getNumbersubFiles()
+{
+	return numberSubFiles;
 }
 
 int DirectoryINode::getNumberSubFiles()
@@ -64,10 +68,15 @@ int INode::getNumberDataBlocks()
 	return numberDataBlocks;
 }
 
-void INode::assignDataBlock(DataBlock* dataBlock)
+void INode::assignDataBlock(int dataBlockID)
 {
-	dataBlocks[numberDataBlocks] = dataBlock;
+	dataBlocks[numberDataBlocks] = dataBlockID;
 	numberDataBlocks++;
+}
+
+int* INode::getAssignedDataBlocks(int& size)
+{
+	return dataBlocks;
 }
 
 int INode::getSize()
@@ -95,4 +104,36 @@ int DirectoryINode::getSize()
 
 	return size;
 
+}
+
+void DirectoryINode::removeSubDirectory(string name)
+{
+	bool foundDirectory = false;
+	//If null subdirectory is referenced, the method that called this incorrectly identified subdirectory name or parent name
+	for (int i = 0; i < 100; i++)
+	{
+		if (subDirectories[i]->getName() == name)
+		{
+			delete subDirectories[i];
+
+			if(subDirectories[i] !=  NULL)
+				subDirectories[i] = NULL;
+
+			foundDirectory = true;
+
+			numberSubDirectories--;
+			return;
+		}
+
+		if (foundDirectory && i == 99)
+			subDirectories[i] = NULL;
+
+		if (foundDirectory && i < 99)
+		{
+			if (subDirectories[i] == NULL)
+				return;
+			subDirectories[i] = subDirectories[i + 1];
+		}
+
+	}
 }
