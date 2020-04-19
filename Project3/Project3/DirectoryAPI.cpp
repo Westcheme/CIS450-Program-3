@@ -178,6 +178,9 @@ unique_ptr<DirectoryINode> DirectoryAPI::findDirectory(string path)
 	string foundString;
 
 	currentINode.reset(rootDirectory.get());
+
+	if (path == "/")
+		return currentINode;
 	
 	//iterates through all DirectoryINodes until the desired directory INode is reached
 	//possible valid input to consider:

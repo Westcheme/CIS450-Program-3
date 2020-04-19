@@ -7,7 +7,10 @@ UMDLibOS::UMDLibOS()
 {
 	osErrMsg = "";
 	diskErrMsg = "";
+	FS_API = new FileSystemAPI;
 	FA_API = new FileAccessAPI;
+	DISK_API = new DiskAPI;
+	DIR_API = new DirectoryAPI;
 	fs_available = false;
 }
 

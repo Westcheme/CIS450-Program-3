@@ -126,6 +126,61 @@ namespace UMDLibOSUnitTest
 			Assert::AreEqual(expectedReturn, actualReturn);
 		}
 
+		//Create a new directory in root
+		//Verify directory exists, and that 
+		//its name is same as input with a "/" at end
+		TEST_METHOD(Create_Directory_From_Root)
+		{
+			//arrange
+			string path = "/testDirectory";
+			string expectedName = "testDirectory/";
+			string foundName;
+			int actualReturn, expectedReturn = 0;
+			unique_ptr<DirectoryINode> returnedDirectory;
+
+			//act
+			actualReturn = DIR_API->Dir_Create(path);
+			if (expectedReturn != actualReturn) {
+				foundName = "failed to create directory";
+			}
+			else
+			{
+				returnedDirectory.reset(DIR_API->findDirectory(path).get());
+			}
+
+			if (returnedDirectory == NULL) {
+				foundName = "Directory created is NULL";
+			}
+			else
+			{
+				foundName = returnedDirectory->getName();
+			}
+
+			//assert
+			Assert::AreEqual(expectedName, foundName);
+		}
+
+		//Test Method template
+		TEST_METHOD(Create_Directory_On_Sub)
+		{
+			//arrange
+			//act
+			//assert
+		}
+
+		//Test Method template
+		TEST_METHOD(Create_Directory_NAME_LENGTH_ERROR)
+		{
+			//arrange
+			string expectedOSErrorMsg = "E_DIR_CREATE";
+
+			//act
+
+			//assert
+			//Assert::AreEqual(expectedOSErrorMsg, UMDLibOS::getOSErrorMsg());
+
+		}
+
 		//Verify that decimal to hex conversion is correct
 		TEST_METHOD(decimalToHex)
 		{
