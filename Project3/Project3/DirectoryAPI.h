@@ -4,17 +4,18 @@ using namespace std;
 
 class UMDLibOS;
 
+static int numDirectories;
+
 class DirectoryAPI
 {
 private:
-	int numDirectories;
 public:
 	DirectoryAPI();
-	int Dir_Create(string path);
-	int Dir_Size(string path);
-	int Dir_Read(string path, string& buffer, int size);
-	int Dir_Unlink(string path);
-	int getNumDirectories();
-	static unique_ptr<DirectoryINode>* findDirectory(string path);
+	static int Dir_Create(string path);
+	static int Dir_Size(string path);
+	static int Dir_Read(string path, string& buffer, int size);
+	static int Dir_Unlink(string path);
+	static int getNumDirectories();
+	static shared_ptr<DirectoryINode> findDirectory(string path);
 };
 

@@ -3,7 +3,7 @@
 
 DirectoryAPI::DirectoryAPI()
 {
-	numDirectories = 0;
+	//numDirectories = 0;
 }
 
 //Dir_Create() creates a new directory as named by path.
@@ -14,6 +14,7 @@ DirectoryAPI::DirectoryAPI()
 //Note that Dir_Create() is not recursive -- that is, if only "/" exists, and you want to create a directory "/a/b/", must first create "/a", and then create "/a/b"
 int DirectoryAPI::Dir_Create(string path)
 {
+	&rootDirectory;
 	//Files names must be accounted for in the 256 character path limit
 	if (path.length() > 240)
 	{
@@ -35,9 +36,10 @@ int DirectoryAPI::Dir_Create(string path)
 	}
 	else
 	{
+		&rootDirectory;
 		cout << "Parent Directory Found";
-		unique_ptr<DirectoryINode>* parentDirectory;
-		unique_ptr<DirectoryINode>* newDirectory;
+		shared_ptr<DirectoryINode> parentDirectory;
+		shared_ptr<DirectoryINode> newDirectory;
 		string newDirectoryName;
 
 		if (path.at(path.size() - 1) == '/')
@@ -64,10 +66,10 @@ int DirectoryAPI::Dir_Create(string path)
 			return -1;
 		}
 
-		newDirectory = new unique_ptr<DirectoryINode>;
-		newDirectory->get()->setName(newDirectoryName);
+		newDirectory.reset(new DirectoryINode);
+		newDirectory->setName(newDirectoryName);
 
-		parentDirectory->get()->addSubDirectory(unique_ptr<DirectoryINode>(newDirectory->get()));
+		parentDirectory->addSubDirectory(shared_ptr<DirectoryINode>(newDirectory));
 
 		numDirectories++;
 
@@ -79,7 +81,7 @@ int DirectoryAPI::Dir_Create(string path)
 //This routine should be used to find the size of the directory before calling Dir_Read() (described below) to find the contents of the directory.
 int DirectoryAPI::Dir_Size(string path)
 {
-	unique_ptr<DirectoryINode>* targetDirectory;
+	shared_ptr<DirectoryINode> targetDirectory;
 	targetDirectory = findDirectory(path);
 
 	if(targetDirectory == NULL)
@@ -88,7 +90,7 @@ int DirectoryAPI::Dir_Size(string path)
 		return -1;
 	}
 
-	return targetDirectory->get()->getSize();
+	return targetDirectory->getSize();
 
 }
 
@@ -99,7 +101,7 @@ int DirectoryAPI::Dir_Size(string path)
 //Otherwise, read the data into the buffer, and return the number of directory entries that are in the directory
 int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 {
-	unique_ptr<DirectoryINode>* targetDirectory;
+	shared_ptr<DirectoryINode> targetDirectory;
 	string newEntry = "";
 	string entryString = "";
 	int entrySize = 0;
@@ -114,19 +116,19 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	}
 
 
-	for (int i = 0; i < targetDirectory->get()->getNumberSubDirectories(); i++)
+	for (int i = 0; i < targetDirectory->getNumberSubDirectories(); i++)
 	{
-		newEntry = targetDirectory->get()->subDirectories[i]->getName();
+		newEntry = targetDirectory->subDirectories[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
-		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->get()->subDirectories[i]->getID()));
+		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->subDirectories[i]->getID()));
 		entryString += newEntry;
 	}
 
-	for (int i = 0; i < targetDirectory->get()->getNumberSubFiles(); i++)
+	for (int i = 0; i < targetDirectory->getNumberSubFiles(); i++)
 	{
-		newEntry = targetDirectory->get()->subFiles[i]->getName();
+		newEntry = targetDirectory->subFiles[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
-		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->get()->subFiles[i]->getID()));
+		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->subFiles[i]->getID()));
 		entryString += newEntry;
 	}
 	//if size is not big enough to contain all entries
@@ -173,14 +175,14 @@ int DirectoryAPI::getNumDirectories()
 
 //HELPER METHODS:
 
-unique_ptr<DirectoryINode>* DirectoryAPI::findDirectory(string path)
+shared_ptr<DirectoryINode> DirectoryAPI::findDirectory(string path)
 {
-	unique_ptr<DirectoryINode> *currentINode, *subINode, *returnINode;
+	shared_ptr<DirectoryINode> currentINode, subINode, returnINode;
 	string delimiter = "/";
 	string foundString;
 	int foundIndex;
-
-	currentINode = &rootDirectory;
+	&rootDirectory;
+	currentINode = rootDirectory;
 	if (path == "/")
 		return currentINode;
 	
@@ -197,13 +199,11 @@ unique_ptr<DirectoryINode>* DirectoryAPI::findDirectory(string path)
 			return NULL;*/
 		foundString = path.substr(1, path.find(delimiter) - 1);
 		path = path.substr(path.find(delimiter), path.size() - path.find(delimiter));
-		for (int i = 0; i < currentINode->get()->getNumberSubDirectories(); i++)
+		for (int i = 0; i < currentINode->getNumberSubDirectories(); i++)
 		{
-			subINode = &currentINode->get()->subDirectories[i];
-			if (subINode->get()->getName() == foundString)
+			subINode = currentINode->subDirectories[i];
+			if (subINode->getName() == foundString)
 			{
-				if (rootDirectory == NULL)
-					rootDirectory.reset(currentINode->get());
 				currentINode = subINode;
 				continue;
 			}
@@ -211,11 +211,11 @@ unique_ptr<DirectoryINode>* DirectoryAPI::findDirectory(string path)
 	}
 	//handles the last directory name
 	foundString = path.substr(1, path.size() - 1);
-	for (int i = 0; i < currentINode->get()->getNumberSubDirectories(); i++)
+	for (int i = 0; i < currentINode->getNumberSubDirectories(); i++)
 	{
-		if (currentINode->get()->subDirectories[i]->getName() == foundString)
+		if (currentINode->subDirectories[i]->getName() == foundString)
 		{
-			returnINode = &currentINode->get()->subDirectories[i];
+			returnINode = currentINode->subDirectories[i];
 			return returnINode;
 		}
 	}

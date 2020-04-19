@@ -21,10 +21,9 @@ static string diskErrMsg;
 static bool fs_available;
 static FileAccessAPI* FA_API;
 static FileSystemAPI* FS_API;
-static DirectoryAPI* DIR_API;
 static bool DiskSectorBitmap[NUM_SECTORS];
 static bool INodeBitmap[NUM_SECTORS];
-static unique_ptr<DirectoryINode> rootDirectory;
+static shared_ptr<DirectoryINode> rootDirectory;
 
 class UMDLibOS
 {
