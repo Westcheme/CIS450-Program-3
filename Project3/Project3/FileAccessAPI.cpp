@@ -369,11 +369,29 @@ int FileAccessAPI::File_Unlink(string file)
 	}
 	else
 	{
-		unique_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
-
-		for (int i = 0; i < fileDirectory->getNumberSubDirectories; i++)
+		string zeroString = "";
+		for (int i = 0; i < 512; i++)
 		{
-			if(fileDirectory->subDirectories[i] == )
+			zeroString += "0";
+		}
+
+		unique_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
+		unique_ptr<FileINode> fileINode = findFile(path, file);
+		int diskSectorIndex;
+
+		for (int i = 0; i < fileDirectory->getNumberSubFiles; i++)
+		{
+			if (fileDirectory->subFiles[i]->getName() == file)
+			{
+				fileDirectory->subFiles[i] = NULL;
+			}
+		}
+
+		for (int i = 0; i < fileINode.get->numberDataBlocks; i++)
+		{
+			diskSectorIndex = fileINode.get->dataBlocksIndex[i];
+			DiskSectorBitmap[diskSectorIndex] = 0;
+			DiskAPI::Disk_Write(diskSectorIndex, zeroString);
 		}
 
 		return 0;
@@ -386,15 +404,15 @@ int FileAccessAPI::File_Unlink(string file)
 
 unique_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
 {
-	unique_ptr<DirectoryINode> directoryINode = DirectoryAPI::findDirectory(path);
+	unique_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
 
-	for (int i = 0; i < directoryINode->getNumberSubDirectories(); i++)
+	for (int i = 0; i < fileDirectory->getNumberSubFiles(); i++)
 	{
-		if (directoryINode->subFiles[i]->getName() == file)
+		if (fileDirectory->subFiles[i]->getName() == file)
 		{
-			return directoryINode->subFiles[i];
+			return fileDirectory->subFiles[i];
 		}
-	}
+	}g
 }
 
 int FileAccessAPI::getNumFiles()
