@@ -8,6 +8,10 @@ INode::INode()
 	size = 0;
 	name = "";
 	numberDataBlocks = 0;
+	for (int i = 0; i < MAX_FILE_SIZE; i++)
+	{
+		dataBlocksIndex[i] = 0;
+	}
 }
 
 FileINode::FileINode()
@@ -64,9 +68,9 @@ int INode::getNumberDataBlocks()
 	return numberDataBlocks;
 }
 
-void INode::assignDataBlock(unique_ptr<DataBlock> dataBlock)
+void INode::assignDataBlock(int dataBlockIndex)
 {
-	dataBlocks[numberDataBlocks].reset(dataBlock.get());
+	dataBlocks[numberDataBlocks] = dataBlockIndex;
 	numberDataBlocks++;
 }
 

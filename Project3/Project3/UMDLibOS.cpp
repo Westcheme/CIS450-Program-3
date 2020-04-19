@@ -9,6 +9,10 @@ UMDLibOS::UMDLibOS()
 	diskErrMsg = "";
 	FA_API = new FileAccessAPI;
 	fs_available = false;
+	for (int i = 0; i < NUM_SECTORS; i++)
+	{
+		DiskSectorBitmap[i] = 0;
+	}
 }
 
 void UMDLibOS::inputSeekingLoop() {

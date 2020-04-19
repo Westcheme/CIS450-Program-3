@@ -32,14 +32,14 @@ protected:
 	int ID;
 	string name; //In a real Linux file system, the name of the file would not be stored in the INode, but 
 	string fileType;
-	unique_ptr<DataBlock> dataBlocks[10]; //Maximum number of 10 referenced by an INode
+	int dataBlocksIndex[10]; //Maximum number of 10 referenced by an INode
 	int numberDataBlocks;
 public:
 	INode();
 	void setName(string name);
 	string getName();
 	int getNumberDataBlocks();
-	void assignDataBlock(unique_ptr<DataBlock> dataBlock);
+	void assignDataBlock(int dataBlockIndex);
 	int getSize();
 	int getID();
 };
