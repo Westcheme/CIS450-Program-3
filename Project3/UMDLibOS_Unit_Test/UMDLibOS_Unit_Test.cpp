@@ -13,22 +13,222 @@ namespace UMDLibOSUnitTest
 	{
 	public:
 		
-		TEST_METHOD(DecimalToHex)
+		//Test Method template
+		TEST_METHOD(testMethodTemplate)
 		{
-			////arrange
-			//string expectedHex = "AA";
-			//int decimalInput = 170;
-			//string output;
+			//arrange
+			//act
+			//assert
+		}
 
-			////act
-			//output = UMDLibOS::decimalToHex(decimalInput);
-			//
-			////assert
-			//int equal = output == expectedHex;
-			//assert(equal && "170 is AA in hex");
-			//
+		//Verify that disk boot returns 0 when no error
+		TEST_METHOD(DISK_Init_NO_ERROR)
+		{
+			//arrange
+			int expectedReturnCode = 0;
+			int returnCode;
 
+			//act
+			returnCode = DiskAPI::Disk_Init();
+
+			//assert
+			Assert::AreEqual(expectedReturnCode, returnCode);
 
 		}
+
+		//Test Loading Disk doesn't give error code after initialization
+		TEST_METHOD(Disk_Load_NO_ERROR)
+		{
+			//arrange
+			int expectedReturnCode = 0;
+			int returnCode;
+
+			//act
+			DiskAPI::Disk_Init();
+			returnCode = DiskAPI::Disk_Load();
+
+			//assert
+			Assert::AreEqual(expectedReturnCode, returnCode);
+
+		}
+
+		//Verify that saving disk does not result in error after booting and loading
+		TEST_METHOD(Disk_Save_NO_ERROR)
+		{
+			//arrange
+			int expectedReturnCode = 0;
+			int returnCode;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			returnCode = DiskAPI::Disk_Save();
+
+			//assert
+			Assert::AreEqual(expectedReturnCode, returnCode);
+		}
+
+		//Verify Disk_Write and Disk_Read work together
+		TEST_METHOD(Disk_Read_Write_NO_ERROR)
+		{
+			//arrange
+			int sectorNumber = 5;
+			string content = "TestString";
+			int contentLength = content.size();
+			//writtenString must be same size as sector
+			string writtenString = content.append(SECTOR_SIZE - contentLength, '0');
+			string readString;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DiskAPI::Disk_Write(sectorNumber, writtenString);
+			DiskAPI::Disk_Read(sectorNumber, readString);
+
+			//assert
+			Assert::AreEqual(writtenString, readString);
+		}
+
+		TEST_METHOD(Disk_Read_OUT_OF_BOUNDS)
+		{
+			//arrange
+			int sectorNumber = 10000;
+			int expectedReturn = -1;
+			int actualReturn;
+			string writtenString;
+			string readString;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			actualReturn = DiskAPI::Disk_Read(sectorNumber, readString);
+
+			//assert
+			Assert::AreEqual(expectedReturn, actualReturn);
+		}
+
+
+		TEST_METHOD(Disk_Write_OUT_OF_BOUNDS)
+		{
+			//arrange
+			int sectorNumber = 10000;
+			int expectedReturn = -1;
+			int actualReturn;
+			string writtenString;
+			string readString;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			actualReturn = DiskAPI::Disk_Write(sectorNumber, writtenString);
+
+			//assert
+			Assert::AreEqual(expectedReturn, actualReturn);
+		}
+
+		//Create a new directory in root
+		//Verify directory exists, and that 
+		//its name is same as input with a "/" at end
+		TEST_METHOD(Create_Directory_From_Root)
+		{
+			//arrange
+			string path = "/testDirectory";
+			string expectedName = "testDirectory/";
+			string foundName;
+			int actualReturn, expectedReturn = 0;
+			unique_ptr<DirectoryINode>* returnedDirectory = NULL;
+
+			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			actualReturn = DIR_API->Dir_Create(path);
+			if (expectedReturn != actualReturn) {
+				foundName = "failed to create directory";
+			}
+			else
+			{
+				returnedDirectory = DIR_API->findDirectory(path);
+			}
+
+			if (returnedDirectory == NULL) {
+				foundName = "Directory created is NULL";
+			}
+			else
+			{
+				foundName = returnedDirectory->get()->getName();
+			}
+
+			//assert
+			Assert::AreEqual(expectedName, foundName);
+		}
+
+		//Test Method template
+		TEST_METHOD(Create_Directory_On_Sub)
+		{
+			//arrange
+			//act
+			//assert
+		}
+
+		//Test Method template
+		TEST_METHOD(Create_Directory_NAME_LENGTH_ERROR)
+		{
+			//arrange
+			string expectedOSErrorMsg = "E_DIR_CREATE";
+
+			//act
+
+			//assert
+			Assert::AreEqual(expectedOSErrorMsg, UMDLibOS::getOSErrorMsg());
+
+		}
+
+		//Verify that decimal to hex conversion is correct
+		TEST_METHOD(decimalToHex)
+		{
+			//arrange
+			string expectedHex = "aa";
+			int decimalInput = 170;
+			string output = "";
+
+			//act
+			output = UMDLibOS::decimalToHex(decimalInput);
+			
+			//assert
+			Assert::AreEqual(expectedHex, output);
+
+		}
+
+		//Verify that hex to decimal conversion is correct
+		TEST_METHOD(hexToDecimal)
+		{
+			//arrange
+			string hexInput = "0b";
+			int expectedInt = 11;
+			int output;
+
+			//act
+			output = UMDLibOS::hexToDecimal(hexInput);
+
+			//assert
+			Assert::AreEqual(expectedInt, output);
+		}
+
+		TEST_METHOD(unique_ptr_reset_test)
+		{
+			//arrange
+			DirectoryINode* newINode = new DirectoryINode;
+			newINode->setName("TestINode");
+			unique_ptr<DirectoryINode> initialINode;
+			unique_ptr<DirectoryINode> resetINode;
+			initialINode.reset(newINode);
+			
+			//act
+			resetINode.reset(initialINode.get());
+
+			//assert
+			Assert::AreEqual(initialINode->getName(), resetINode->getName());
+		}
+
 	};
 }

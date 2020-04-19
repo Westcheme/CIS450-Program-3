@@ -12,7 +12,7 @@
 int FileSystemAPI::FS_Boot()
 {
 	//Currently always creates a new disk if something were to fail
-	DISK_API->Disk_Init();
+	DiskAPI::Disk_Init();
 
 	if (false /*No current way for this to fail*/) {
 		
@@ -31,7 +31,7 @@ int FileSystemAPI::FS_Boot()
 //return 0
 int FileSystemAPI::FS_Sync()
 {
-	DISK_API->Disk_Save();
+	DiskAPI::Disk_Save();
 	return 0;
 }
 

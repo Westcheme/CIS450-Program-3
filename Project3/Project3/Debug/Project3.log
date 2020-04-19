@@ -1,21 +1,3 @@
 ﻿  DirectoryAPI.cpp
-  DiskAPI.cpp
-  FileAccessAPI.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(80,38): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(80,38): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(135,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(136,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(249,28): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(330,17): warning C4834: discarding return value of function with 'nodiscard' attribute
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(352,38): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::size': non-standard syntax; use '&' to create a pointer to member
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(352,38): error C2296: '-': illegal, left operand has type 'unsigned int (__thiscall std::basic_string<char,std::char_traits<char>,std::allocator<char>>::* )(void) noexcept const'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(374,61): error C3867: 'DirectoryINode::getNumberSubDirectories': non-standard syntax; use '&' to create a pointer to member
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(374,61): error C2446: '<': no conversion from 'int (__thiscall DirectoryINode::* )(void)' to 'int'
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(374,38): message : There is no context in which this conversion is possible
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(376,43): error C2059: syntax error: ')'
-  FileSystemAPI.cpp
-  INode.cpp
-E:\School\Winter 2020\ECE 478\Project 3\CIS450-Program-3\Project3\Project3\INode.cpp(73,2): error C2065: 'dataBlocks': undeclared identifier
-  main.cpp
-  UMDLibOS.cpp
-  Generating Code...
+C:\Users\Julius Cesar Estrope\Documents\Professional\CIS 450\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(181,6): warning C4101: 'foundIndex': unreferenced local variable
+  Project3.vcxproj -> C:\Users\Julius Cesar Estrope\Documents\Professional\CIS 450\Project 3\CIS450-Program-3\Project3\Debug\Project3.exe

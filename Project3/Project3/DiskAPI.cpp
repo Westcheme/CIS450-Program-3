@@ -11,24 +11,29 @@ int DiskAPI::Disk_Init()
 	//Initialize all data in disk sectors to 0
 	for (int i = 0; i < NUM_SECTORS; i++)
 	{
-		DataBlock* dataBlock = new DataBlock;
+		DataBlock* dataBlock = new DataBlock();
 		dataBlock->byteStream = zeroString;
 		dataBlock->ID = i;
 		dataBlock->size = 0;
 
+		DataBlock* dataBlock1 = new DataBlock();
+		dataBlock1->byteStream = zeroString;
+		dataBlock1->ID = i;
+		dataBlock1->size = 0;
+
 		externalDiskSectors[i].reset(dataBlock);
-		workingDiskSectors[i].reset(dataBlock);
+		workingDiskSectors[i].reset(dataBlock1);
 	}
 	
 	//Create the root directory if one does not already exist
-	if (rootDirectory == NULL) {
+	if (rootDirectory.get() == NULL) {
 		rootDirectory.reset(new DirectoryINode);
 		rootDirectory->setName("Root");
 		INodeBitmap[0] = 1;
 	}
 
 	//Crate the super block and store it to disk sector 0
-	unique_ptr<DataBlock> superBlock;
+	unique_ptr<DataBlock> superBlock = make_unique<DataBlock>();
 	superBlock->size = SECTOR_SIZE;
 	superBlock->byteStream = MAGIC_NUMBER;
 	superBlock->size = 1;
