@@ -419,10 +419,18 @@ FileINode* FileAccessAPI::findFile(string path, string file)
 		{
 			return fileDirectory->subFiles[i];
 		}
-	}g
+	}
 }
 
 int FileAccessAPI::getNumFiles()
 {
 	return numFiles;
+}
+
+void FileAccessAPI::showOpenFiles()
+{
+	for (int i = 0; i < numFilesOpen; i++)
+	{
+		cout << i << ". " << openFiles[i]->getName() << endl;
+	}
 }

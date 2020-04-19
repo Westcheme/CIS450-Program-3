@@ -26,4 +26,5 @@ public:
 	int File_Unlink(string file);
 	FileINode* findFile(string path, string file);
 	int getNumFiles();
+	void showOpenFiles();
 };

@@ -38,39 +38,95 @@ void UMDLibOS::inputSeekingLoop() {
 
 		switch (integerResponse) {
 			case 1:
-
+				cout << "Enter the directory and file name: ";
+				cin >> stringResponse;
+				FA_API->File_Create(stringResponse);
 				break;
 			case 2:
-
+				cout << "Enter the directory and file name: ";
+				cin >> stringResponse;
+				FA_API->File_Open(stringResponse);
 				break;
 			case 3:
-
+				string buffer;
+				int size;
+				FA_API->showOpenFiles();
+				cout << "Choose a file: ";
+				cin >> integerResponse;
+				cout << "Enter a size: ";
+				cin >> size;
+				FA_API->File_Read(integerResponse, buffer, size);
 				break;
 			case 4:
-
+				string buffer;
+				int size;
+				FA_API->showOpenFiles();
+				cout << "Choose a file: ";
+				cin >> integerResponse;
+				cout << "Enter a size: ";
+				cin >> size;
+				FA_API->File_Write(integerResponse, buffer, size);
 				break;
 			case 5:
-
+				int offset;
+				FA_API->showOpenFiles();
+				cout << "Choose a file: ";
+				cin >> integerResponse;
+				cout << "Choose an offset: ";
+				cin >> offset;
+				FA_API->File_Seek(integerResponse, offset);
 				break;
 			case 6:
-
+				FA_API->showOpenFiles();
+				cout << "Choose a file: ";
+				cin >> integerResponse;
+				FA_API->File_Close(integerResponse);
 				break;
 			case 7:
-
+				cout << "Enter the directory and file name: ";
+				cin >> stringResponse;
+				FA_API->File_Unlink(stringResponse);
 				break;
 			case 8:
-
+				cout << "Enter the directory and name: ";
+				cin >> stringResponse;
+				DR_API->Dir_Create(stringResponse);
 				break;
 			case 9:
-
+				cout << "Enter the directory and name: ";
+				cin >> stringResponse;
+				DR_API->Dir_Size(stringResponse);
 				break;
 			case 10:
-
+				string buffer;
+				int size;
+				cout << "Enter the directory and name: ";
+				cin >> stringResponse;
+				cout << "Enter a size: ";
+				cin >> size;
+				DR_API->Dir_Read(stringResponse, buffer, size);
 				break;
 			case 11:
-
+				cout << "Enter the directory and name: ";
+				cin >> stringResponse;
+				DR_API->Dir_Unlink(stringResponse);
 				break;
 			case 12:
+				cout << getOSErrorMsg();
+				break;
+			case 13:
+				cout << getDiskErrorMsg();
+				break;
+			case 14:
+				FS_API->FS_Boot();
+				break;
+			case 15:
+				FS_API->FS_Sync();
+				break;
+			case 16:
+				FS_API->FS_Reset();
+				break;
+			case 17:
 
 				break;
 			default:
@@ -158,10 +214,14 @@ void UMDLibOS::displayUMDLibOSInteractions() {
 	println("5. Seek File");
 	println("6. Close File");
 	println("7. Unlink File");
-	println("8. Check OS Error Message");
-	println("9. Check Disk Error Message");
-	println("10. Call FS_Boot()");
-	println("11. Call FS_Sync()");
-	println("12. Call FS_Reset()");
-	println("13. Clear Error Messages");
+	println("8. Create Directory");
+	println("9. Size Directory");
+	println("10. Read Directory");
+	println("11. Unlink Directory");
+	println("12. Check OS Error Message");
+	println("13. Check Disk Error Message");
+	println("14. Call FS_Boot()");
+	println("15. Call FS_Sync()");
+	println("16. Call FS_Reset()");
+	println("17. Clear Error Messages");
 }
