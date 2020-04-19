@@ -7,8 +7,8 @@ using namespace std;
 #define MAGIC_NUMBER '4'
 
 class UMDLibOS;
-static shared_ptr<DataBlock> externalDiskSectors[NUM_SECTORS];
-static shared_ptr<DataBlock> workingDiskSectors[NUM_SECTORS];
+static DataBlock* externalDiskSectors[NUM_SECTORS];
+static DataBlock* workingDiskSectors[NUM_SECTORS];
 
 class DiskAPI
 {
@@ -19,6 +19,6 @@ public:
 	static int Disk_Save();
 	static int Disk_Write(int sector, string buffer);
 	static int Disk_Read(int sector, string& buffer);
-	static void assignDataBlockToDiskSector(int sector, shared_ptr<DataBlock>& dataBlock);
+	static void assignDataBlockToDiskSector(int sector, DataBlock* dataBlock);
 };
 

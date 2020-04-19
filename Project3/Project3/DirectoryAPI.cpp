@@ -30,16 +30,16 @@ int DirectoryAPI::Dir_Create(string path)
 	}
 	else if (findDirectory(path) != NULL)	//TODO: Must find if there is a directory of the same name only in the current directory, if found do not create directory, cannot have duplicate directories
 	{
-		cout << "Parent directory not found";
+		cout << "File Already Exists";
 		UMDLibOS::setOSErrorMsg("E_DIR_CREATE");
 		return -1;
 	}
 	else
 	{
 		&rootDirectory;
-		cout << "Parent Directory Found";
-		shared_ptr<DirectoryINode> parentDirectory;
-		shared_ptr<DirectoryINode> newDirectory;
+		//cout << "Parent Directory Found";
+		DirectoryINode* parentDirectory;
+		DirectoryINode* newDirectory;
 		string newDirectoryName;
 
 		if (path.at(path.size() - 1) == '/')
@@ -55,7 +55,7 @@ int DirectoryAPI::Dir_Create(string path)
 			return -1;
 		}
 		
-		path = path.substr(0, path.find_last_of("/"));
+		path = path.substr(0, path.find_last_of("/") + 1);
 		parentDirectory = findDirectory(path);
 
 		//indicates error if the path does not exist
@@ -66,10 +66,10 @@ int DirectoryAPI::Dir_Create(string path)
 			return -1;
 		}
 
-		newDirectory.reset(new DirectoryINode);
+		newDirectory = new DirectoryINode();
 		newDirectory->setName(newDirectoryName);
 
-		parentDirectory->addSubDirectory(shared_ptr<DirectoryINode>(newDirectory));
+		parentDirectory->addSubDirectory(newDirectory);
 
 		numDirectories++;
 
@@ -81,7 +81,7 @@ int DirectoryAPI::Dir_Create(string path)
 //This routine should be used to find the size of the directory before calling Dir_Read() (described below) to find the contents of the directory.
 int DirectoryAPI::Dir_Size(string path)
 {
-	shared_ptr<DirectoryINode> targetDirectory;
+	DirectoryINode* targetDirectory;
 	targetDirectory = findDirectory(path);
 
 	if(targetDirectory == NULL)
@@ -101,7 +101,7 @@ int DirectoryAPI::Dir_Size(string path)
 //Otherwise, read the data into the buffer, and return the number of directory entries that are in the directory
 int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 {
-	shared_ptr<DirectoryINode> targetDirectory;
+	DirectoryINode* targetDirectory;
 	string newEntry = "";
 	string entryString = "";
 	int entrySize = 0;
@@ -175,14 +175,16 @@ int DirectoryAPI::getNumDirectories()
 
 //HELPER METHODS:
 
-shared_ptr<DirectoryINode> DirectoryAPI::findDirectory(string path)
+DirectoryINode* DirectoryAPI::findDirectory(string path)
 {
-	shared_ptr<DirectoryINode> currentINode, subINode, returnINode;
-	string delimiter = "/";
+	DirectoryINode* currentINode;
+	DirectoryINode* subINode;
+	DirectoryINode* returnINode;
+	char delimiter = '/';
 	string foundString;
-	int foundIndex;
-	&rootDirectory;
-	currentINode = rootDirectory;
+
+	currentINode = &rootDirectory;
+
 	if (path == "/")
 		return currentINode;
 	
@@ -193,12 +195,12 @@ shared_ptr<DirectoryINode> DirectoryAPI::findDirectory(string path)
 		path = '/' + path;
 	if (path[path.size() - 1] == '/')
 		path = path.substr(0, path.size() - 1);
-	while (path.find(delimiter, 1) >= 0) 
+	int foundIndex = path.find(delimiter, 1);
+	while (foundIndex >= 0) //loop while delimiters exist that aren't the first char
 	{
-		/*if (currentINode->get() == NULL)
-			return NULL;*/
-		foundString = path.substr(1, path.find(delimiter) - 1);
-		path = path.substr(path.find(delimiter), path.size() - path.find(delimiter));
+
+		foundString = path.substr(1, path.find(delimiter, 1));
+		path = path.substr(path.find(delimiter) + 1, path.size() - path.find(delimiter));
 		for (int i = 0; i < currentINode->getNumberSubDirectories(); i++)
 		{
 			subINode = currentINode->subDirectories[i];
@@ -208,9 +210,17 @@ shared_ptr<DirectoryINode> DirectoryAPI::findDirectory(string path)
 				continue;
 			}
 		}
+		foundIndex = path.find(delimiter, 1);
 	}
 	//handles the last directory name
-	foundString = path.substr(1, path.size() - 1);
+	foundString = path;
+
+	//Format string to correctly match expected name
+	if (foundString[0] == delimiter)
+		foundString = foundString.substr(foundString.find(delimiter) + 1, foundString.length() - 1);
+	if (foundString[foundString.length() - 1] != delimiter)
+		foundString += delimiter;
+
 	for (int i = 0; i < currentINode->getNumberSubDirectories(); i++)
 	{
 		if (currentINode->subDirectories[i]->getName() == foundString)

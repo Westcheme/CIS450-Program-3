@@ -16,6 +16,6 @@ public:
 	static int Dir_Read(string path, string& buffer, int size);
 	static int Dir_Unlink(string path);
 	static int getNumDirectories();
-	static shared_ptr<DirectoryINode> findDirectory(string path);
+	static DirectoryINode* findDirectory(string path);
 };
 

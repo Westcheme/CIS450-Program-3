@@ -23,7 +23,7 @@ static FileAccessAPI* FA_API;
 static FileSystemAPI* FS_API;
 static bool DiskSectorBitmap[NUM_SECTORS];
 static bool INodeBitmap[NUM_SECTORS];
-static shared_ptr<DirectoryINode> rootDirectory;
+static DirectoryINode rootDirectory;
 
 class UMDLibOS
 {

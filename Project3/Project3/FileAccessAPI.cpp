@@ -409,7 +409,7 @@ int FileAccessAPI::File_Unlink(string file)
 //HEPLER METHODS BELOW:
 
 //
-shared_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
+FileINode* FileAccessAPI::findFile(string path, string file)
 {
 	shared_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
 

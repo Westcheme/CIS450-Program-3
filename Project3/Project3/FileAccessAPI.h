@@ -13,7 +13,7 @@ class FileAccessAPI
 private:
 	int numFiles;
 	int numFilesOpen;
-	shared_ptr<FileINode> openFiles[MAX_NUM_OPEN_FILES];
+	FileINode* openFiles[MAX_NUM_OPEN_FILES];
 	int filePointer[MAX_NUM_OPEN_FILES];
 public:
 	FileAccessAPI();
@@ -24,6 +24,6 @@ public:
 	int File_Seek(int fd, int offset);
 	int File_Close(int fd);
 	int File_Unlink(string file);
-	shared_ptr<FileINode> findFile(string path, string file);
+	FileINode* findFile(string path, string file);
 	int getNumFiles();
 };

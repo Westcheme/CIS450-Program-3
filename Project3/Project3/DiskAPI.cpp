@@ -21,19 +21,18 @@ int DiskAPI::Disk_Init()
 		dataBlock1->ID = i;
 		dataBlock1->size = 0;
 
-		externalDiskSectors[i].reset(dataBlock);
-		workingDiskSectors[i].reset(dataBlock1);
+		externalDiskSectors[i] = dataBlock;
+		workingDiskSectors[i] = dataBlock1;
 	}
 	
 	//Create the root directory if one does not already exist
-	if (rootDirectory.get() == NULL) {
-		rootDirectory.reset(new DirectoryINode());
-		rootDirectory->setName("Root");
+	if (rootDirectory.getName() != "Root") {
+		rootDirectory.setName("Root");
 		INodeBitmap[0] = 1;
 	}
 
 	//Crate the super block and store it to disk sector 0
-	shared_ptr<DataBlock> superBlock = make_unique<DataBlock>();
+	DataBlock* superBlock = new DataBlock;
 	superBlock->size = SECTOR_SIZE;
 	superBlock->byteStream = MAGIC_NUMBER;
 	superBlock->size = 1;
@@ -146,7 +145,7 @@ int DiskAPI::Disk_Read(int sector, string& buffer)
 
 //HELPER METHODS BELOW
 
-void DiskAPI::assignDataBlockToDiskSector(int sector, shared_ptr<DataBlock>& dataBlock) {
+void DiskAPI::assignDataBlockToDiskSector(int sector, DataBlock* dataBlock) {
 	workingDiskSectors[sector]->byteStream = dataBlock->byteStream;
 	workingDiskSectors[sector]->ID = sector;
 	workingDiskSectors[sector]->size = dataBlock->byteStream.size();
