@@ -36,8 +36,8 @@ int DirectoryAPI::Dir_Create(string path)
 	else
 	{
 		cout << "Parent Directory Found";
-		unique_ptr<DirectoryINode>* parentDirectory;
-		unique_ptr<DirectoryINode>* newDirectory;
+		unique_ptr<DirectoryINode> parentDirectory;
+		unique_ptr<DirectoryINode> newDirectory;
 		string newDirectoryName;
 
 		if (path.at(path.size() - 1) == '/')
@@ -99,7 +99,7 @@ int DirectoryAPI::Dir_Size(string path)
 //Otherwise, read the data into the buffer, and return the number of directory entries that are in the directory
 int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 {
-	unique_ptr<DirectoryINode>* targetDirectory;
+	unique_ptr<DirectoryINode> targetDirectory;
 	string newEntry = "";
 	string entryString = "";
 	int entrySize = 0;
@@ -114,17 +114,17 @@ int DirectoryAPI::Dir_Read(string path, string& buffer, int size)
 	}
 
 
-	for (int i = 0; i < targetDirectory->get()->getNumberSubDirectories(); i++)
+	for (int i = 0; i < targetDirectory.get()->getNumberSubDirectories(); i++)
 	{
-		newEntry = targetDirectory->get()->subDirectories[i]->getName();
+		newEntry = targetDirectory.get()->subDirectories[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
-		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->get()->subDirectories[i]->getID()));
+		newEntry.append(UMDLibOS::decimalToHex(targetDirectory.get()->subDirectories[i]->getID()));
 		entryString += newEntry;
 	}
 
-	for (int i = 0; i < targetDirectory->get()->getNumberSubFiles(); i++)
+	for (int i = 0; i < targetDirectory.get()->getNumberSubFiles(); i++)
 	{
-		newEntry = targetDirectory->get()->subFiles[i]->getName();
+		newEntry = targetDirectory.get()->subFiles[i]->getName();
 		newEntry.append(string(16 - newEntry.size(), '0'));
 		newEntry.append(UMDLibOS::decimalToHex(targetDirectory->get()->subFiles[i]->getID()));
 		entryString += newEntry;
