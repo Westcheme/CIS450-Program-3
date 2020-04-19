@@ -2,6 +2,7 @@
 #include "UMDLibOS.h"
 #include "DiskAPI.h"
 #include "DirectoryAPI.h"
+#include "INode.h"
 using namespace std;
 #define MAX_NUM_OPEN_FILES 10
 

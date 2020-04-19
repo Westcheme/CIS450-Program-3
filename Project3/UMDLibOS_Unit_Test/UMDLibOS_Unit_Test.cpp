@@ -136,16 +136,18 @@ namespace UMDLibOSUnitTest
 			string expectedName = "testDirectory/";
 			string foundName;
 			int actualReturn, expectedReturn = 0;
-			unique_ptr<DirectoryINode> returnedDirectory;
+			unique_ptr<DirectoryINode>* returnedDirectory = NULL;
 
 			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
 			actualReturn = DIR_API->Dir_Create(path);
 			if (expectedReturn != actualReturn) {
 				foundName = "failed to create directory";
 			}
 			else
 			{
-				returnedDirectory.reset(DIR_API->findDirectory(path).get());
+				returnedDirectory = DIR_API->findDirectory(path);
 			}
 
 			if (returnedDirectory == NULL) {
@@ -153,7 +155,7 @@ namespace UMDLibOSUnitTest
 			}
 			else
 			{
-				foundName = returnedDirectory->getName();
+				foundName = returnedDirectory->get()->getName();
 			}
 
 			//assert
@@ -177,7 +179,7 @@ namespace UMDLibOSUnitTest
 			//act
 
 			//assert
-			//Assert::AreEqual(expectedOSErrorMsg, UMDLibOS::getOSErrorMsg());
+			Assert::AreEqual(expectedOSErrorMsg, UMDLibOS::getOSErrorMsg());
 
 		}
 
@@ -210,6 +212,22 @@ namespace UMDLibOSUnitTest
 
 			//assert
 			Assert::AreEqual(expectedInt, output);
+		}
+
+		TEST_METHOD(unique_ptr_reset_test)
+		{
+			//arrange
+			DirectoryINode* newINode = new DirectoryINode;
+			newINode->setName("TestINode");
+			unique_ptr<DirectoryINode> initialINode;
+			unique_ptr<DirectoryINode> resetINode;
+			initialINode.reset(newINode);
+			
+			//act
+			resetINode.reset(initialINode.get());
+
+			//assert
+			Assert::AreEqual(initialINode->getName(), resetINode->getName());
 		}
 
 	};

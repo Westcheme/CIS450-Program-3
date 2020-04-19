@@ -69,7 +69,7 @@ int FileAccessAPI::File_Create(string file)
 int FileAccessAPI::File_Open(string file)
 {
 	if (file[file.length() - 1] == '/')
-		file = file.substr(0, file.size - 1);
+		file = file.substr(0, file.size() - 1);
 
 	string path = file.substr(0, file.find_last_of('/'));
 
@@ -109,47 +109,47 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 {
 	int bytesRead = 0;
 
-	if (!fs_available)
-	{
-		cout << "File System not available: Disk not booted.";
-		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
-		return -1;
-	}
-	if (openFiles[fd] == NULL)
-	{
-		UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
-		return -1;
-	}
-	else if (filePointer[fd] == (openFiles.at(fd)->getSize() - 1))
-	{
-		
+	//if (!fs_available)
+	//{
+	//	cout << "File System not available: Disk not booted.";
+	//	UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+	//	return -1;
+	//}
+	//if (openFiles[fd] == NULL)
+	//{
+	//	UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
+	//	return -1;
+	//}
+	//else if (filePointer[fd] == (openFiles.at(fd)->getSize() - 1))
+	//{
+	//	
 
-	}
-	else if (size <= openFiles[fd]->getSize())
-	{
-		filePointer[fd] += size;
-		bytesRead = size;
-	}
-	else if (size > openFiles[fd]->getSize())
-	{
-		filePointer[fd] += openFiles[fd]->getSize() - filePointer[fd];
-		bytesRead = openFiles[fd].get->size - filePointer[fd];
-	}
-	else
-	{
-		if ((openFiles[fd].get->size - filePointer[fd]) / size >= 1)
-		{
-			filePointer[fd] += size;
-			bytesRead = size;
-		}
-		else
-		{
-			filePointer[fd] += openFiles[fd].get->size - filePointer[fd] - 1;
-			bytesRead = openFiles[fd].get->size - filePointer[fd];
-		}
-	}
+	//}
+	//else if (size <= openFiles[fd]->getSize())
+	//{
+	//	filePointer[fd] += size;
+	//	bytesRead = size;
+	//}
+	//else if (size > openFiles[fd]->getSize())
+	//{
+	//	filePointer[fd] += openFiles[fd]->getSize() - filePointer[fd];
+	//	bytesRead = openFiles[fd].get->size - filePointer[fd];
+	//}
+	//else
+	//{
+	//	if ((openFiles[fd].get->size - filePointer[fd]) / size >= 1)
+	//	{
+	//		filePointer[fd] += size;
+	//		bytesRead = size;
+	//	}
+	//	else
+	//	{
+	//		filePointer[fd] += openFiles[fd].get->size - filePointer[fd] - 1;
+	//		bytesRead = openFiles[fd].get->size - filePointer[fd];
+	//	}
+	//}
 
-	//RETRIEVE THE DATABLOCKS FROM MEMORY AND PLACE IN BUFFER
+	////RETRIEVE THE DATABLOCKS FROM MEMORY AND PLACE IN BUFFER
 
 	return bytesRead;
 }
@@ -230,16 +230,17 @@ int FileAccessAPI::File_Unlink(string file)
 
 //HEPLER METHODS BELOW:
 
-
+//
 unique_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
 {
-	DirectoryINode directoryINode = DirectoryAPI::findDirectory(path);
-}
-
-unique_ptr<FileINode> FileAccessAPI::findFile(string file)
-{
+//	DirectoryINode directoryINode = DirectoryAPI::findDirectory(path);
 	return NULL;
 }
+
+//unique_ptr<FileINode> FileAccessAPI::findFile(string file)
+//{
+//	return NULL;
+//}
 
 int FileAccessAPI::getNumFiles()
 {

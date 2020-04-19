@@ -26,7 +26,7 @@ int DiskAPI::Disk_Init()
 	}
 	
 	//Create the root directory if one does not already exist
-	if (rootDirectory == NULL) {
+	if (rootDirectory.get() == NULL) {
 		rootDirectory.reset(new DirectoryINode);
 		rootDirectory->setName("Root");
 		INodeBitmap[0] = 1;
