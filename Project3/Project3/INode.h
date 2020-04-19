@@ -61,12 +61,12 @@ private:
 	int numberSubDirectories = 0;
 public:
 	DirectoryINode();
-	unique_ptr<FileINode>* subFiles;
-	unique_ptr<DirectoryINode>* subDirectories;
+	shared_ptr<FileINode>* subFiles;
+	shared_ptr<DirectoryINode>* subDirectories;
 	int getNumberSubDirectories();
 	int getNumberSubFiles();
 	void setNumberSubDirectories(int quantity);
-	void addSubFile(unique_ptr<FileINode> subFile);
-	void addSubDirectory(unique_ptr<DirectoryINode> subDirectory);
+	void addSubFile(shared_ptr<FileINode> subFile);
+	void addSubDirectory(shared_ptr<DirectoryINode> subDirectory);
 	int getSize();
 };

@@ -9,7 +9,6 @@ UMDLibOS::UMDLibOS()
 	diskErrMsg = "";
 	FS_API = new FileSystemAPI;
 	FA_API = new FileAccessAPI;
-	DIR_API = new DirectoryAPI;
 	fs_available = false;
 	for (int i = 0; i < NUM_SECTORS; i++)
 	{

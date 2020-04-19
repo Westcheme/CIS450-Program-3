@@ -39,14 +39,14 @@ void DirectoryINode::setNumberSubDirectories(int quantity)
 	numberSubDirectories = quantity;
 }
 
-void DirectoryINode::addSubFile(unique_ptr<FileINode> subFile)
+void DirectoryINode::addSubFile(shared_ptr<FileINode> subFile)
 {
 	size += subFile->getSize();
 	subFiles[numberSubFiles].reset(subFile.get());
 	numberSubFiles++;
 }
 
-void DirectoryINode::addSubDirectory(unique_ptr<DirectoryINode> subDirectory)
+void DirectoryINode::addSubDirectory(shared_ptr<DirectoryINode> subDirectory)
 {
 	subDirectories[numberSubDirectories].reset(subDirectory.get());
 	numberSubDirectories++;

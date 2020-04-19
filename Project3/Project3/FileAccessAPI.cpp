@@ -402,9 +402,9 @@ int FileAccessAPI::File_Unlink(string file)
 //HEPLER METHODS BELOW:
 
 //
-unique_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
+shared_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
 {
-	unique_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
+	shared_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
 
 	for (int i = 0; i < fileDirectory->getNumberSubFiles(); i++)
 	{

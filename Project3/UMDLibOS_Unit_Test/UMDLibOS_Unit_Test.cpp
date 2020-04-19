@@ -136,18 +136,19 @@ namespace UMDLibOSUnitTest
 			string expectedName = "testDirectory/";
 			string foundName;
 			int actualReturn, expectedReturn = 0;
-			unique_ptr<DirectoryINode>* returnedDirectory = NULL;
+			shared_ptr<DirectoryINode> returnedDirectory = NULL;
 
 			//act
 			DiskAPI::Disk_Init();
 			DiskAPI::Disk_Load();
-			actualReturn = DIR_API->Dir_Create(path);
+			rootDirectory;
+			actualReturn = DirectoryAPI::Dir_Create(path);
 			if (expectedReturn != actualReturn) {
 				foundName = "failed to create directory";
 			}
 			else
 			{
-				returnedDirectory = DIR_API->findDirectory(path);
+				returnedDirectory = DirectoryAPI::findDirectory(path);
 			}
 
 			if (returnedDirectory == NULL) {
@@ -155,7 +156,7 @@ namespace UMDLibOSUnitTest
 			}
 			else
 			{
-				foundName = returnedDirectory->get()->getName();
+				foundName = returnedDirectory->getName();
 			}
 
 			//assert
