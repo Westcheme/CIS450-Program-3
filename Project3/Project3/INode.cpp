@@ -7,6 +7,10 @@ INode::INode()
 	size = 0;
 	name = "";
 	numberDataBlocks = 0;
+	for (int i = 0; i < MAX_FILE_SIZE; i++)
+	{
+		dataBlocks[i] = 0;
+	}
 }
 
 FileINode::FileINode()
@@ -136,4 +140,13 @@ void DirectoryINode::removeSubDirectory(string name)
 		}
 
 	}
+}
+int INode::getDataBlocksIndex(int index)
+{
+	return dataBlocks[index];
+}
+
+void INode::setDataBlocksIndex(int index, int diskSectorIndex)
+{
+	dataBlocks[index] = diskSectorIndex;
 }

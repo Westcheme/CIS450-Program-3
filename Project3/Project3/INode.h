@@ -41,6 +41,8 @@ public:
 	int* getAssignedDataBlocks(int& size);
 	int getSize();
 	int getID();
+	int getDataBlocksIndex(int index);
+	void setDataBlocksIndex(int index, int diskSectorIndex);
 };
 
 

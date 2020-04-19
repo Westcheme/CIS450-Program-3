@@ -56,6 +56,7 @@ int FileAccessAPI::File_Create(string file)
 	}
 	else
 	{
+		cout << "File was created successfully";
 		FileINode* newFile = new FileINode;
 		newFile->setName(file);
 		numFiles++;
@@ -68,17 +69,19 @@ int FileAccessAPI::File_Create(string file)
 //If there are already maximum number of files open, return -1 and set osErrMsg to E_TOO_MANY_OPEN_FILES
 int FileAccessAPI::File_Open(string file)
 {
-	if (file[file.length() - 1] == '/')
-		file = file.substr(0, file.size() - 1);
-
-	string path = file.substr(0, file.find_last_of('/'));
-
 	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
 		return -1;
 	}
+
+
+	if (file[file.length() - 1] == '/')
+		file = file.substr(0, file.size - 1);
+
+	string path = file.substr(0, file.find_last_of('/'));
+
 	if (numFilesOpen == MAX_NUM_OPEN_FILES)
 	{
 		UMDLibOS::setOSErrorMsg("E_TOO_MANY_OPEN_FILES");
@@ -91,6 +94,7 @@ int FileAccessAPI::File_Open(string file)
 	}
 	else
 	{
+		cout << "Successfully opened file";
 		int fileDescriptor = numFilesOpen;
 		openFiles[fileDescriptor] = findFile(path, file);
 		filePointer[fileDescriptor] = 0;
@@ -105,53 +109,110 @@ int FileAccessAPI::File_Open(string file)
 //If the file is not open, return -1 and set osErrMsg to E_READ_BAD_FD.
 //If the file is open, the number of bytes actually read should be returned, which can be less than or equal to size.
 //If the file pointer is already at the end of the file, zero should be returned.
-int FileAccessAPI::File_Read(int fd, string* buffer, int size)
+int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 {
-	int bytesRead = 0;
+	if (!fs_available)
+	{
+		cout << "File System not available: Disk not booted.";
+		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
+		return -1;
+	}
 
-	//if (!fs_available)
-	//{
-	//	cout << "File System not available: Disk not booted.";
-	//	UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
-	//	return -1;
-	//}
-	//if (openFiles[fd] == NULL)
-	//{
-	//	UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
-	//	return -1;
-	//}
-	//else if (filePointer[fd] == (openFiles.at(fd)->getSize() - 1))
-	//{
-	//	
 
-	//}
-	//else if (size <= openFiles[fd]->getSize())
-	//{
-	//	filePointer[fd] += size;
-	//	bytesRead = size;
-	//}
-	//else if (size > openFiles[fd]->getSize())
-	//{
-	//	filePointer[fd] += openFiles[fd]->getSize() - filePointer[fd];
-	//	bytesRead = openFiles[fd].get->size - filePointer[fd];
-	//}
-	//else
-	//{
-	//	if ((openFiles[fd].get->size - filePointer[fd]) / size >= 1)
-	//	{
-	//		filePointer[fd] += size;
-	//		bytesRead = size;
-	//	}
-	//	else
-	//	{
-	//		filePointer[fd] += openFiles[fd].get->size - filePointer[fd] - 1;
-	//		bytesRead = openFiles[fd].get->size - filePointer[fd];
-	//	}
-	//}
+	if (openFiles[fd] == NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_READ_BAD_FD");
+		return -1;
+	}
+	else if (filePointer[fd] == (openFiles[fd]->getSize() - 1))
+	{
+		return 0;
+	}
+	else
+	{
+		buffer = "";
+		string tempBuffer;
+		int count = 0;
+		int bytesRead;
+		int dataBlockIndexStart = ceil(filePointer[fd] / 512);
+		int dataBlockIndexEnd = ceil((filePointer[fd] + size) / 512);
 
-	////RETRIEVE THE DATABLOCKS FROM MEMORY AND PLACE IN BUFFER
+		if ((openFiles[fd]->getSize() - filePointer[fd]) / size >= 1)
+		{
+			bytesRead = size;
 
-	return bytesRead;
+			for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
+			{
+				DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
+
+				if (i == 0)
+				{
+					for (int j = filePointer[fd]; j < 512; j++)
+					{
+						buffer[count] += tempBuffer[j];
+						count++;
+					}
+				}
+				else if (i == openFiles[fd]->getNumberDataBlocks()-1)
+				{
+					for (int j = 0; j < filePointer[fd] + size - 512; j++)
+					{
+						buffer[count] += tempBuffer[j];
+						count++;
+					}
+				}
+				else
+				{
+					for (int j = 0; j < 512; j++)
+					{
+						buffer[count] += tempBuffer[j];
+						count++;
+					}
+				}
+			}
+
+			filePointer[fd] = filePointer[fd] + size;
+		}
+		else
+		{
+			bytesRead = openFiles[fd]->getSize() - filePointer[fd];
+
+			for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
+			{
+				DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
+
+				if (i == 0)
+				{
+					for (int j = filePointer[fd]; j < 512; j++)
+					{
+						buffer[count] += tempBuffer[j];
+						count++;
+					}
+				}
+				else if (i == openFiles[fd]->getNumberDataBlocks() - 1)
+				{
+					for (int j = 0; j < filePointer[fd] + size - 512; j++)
+					{
+						buffer[count] += tempBuffer[j];
+						count++;
+					}
+				}
+				else
+				{
+					for (int j = 0; j < 512; j++)
+					{
+						buffer[count] += tempBuffer[j];
+						count++;
+					}
+				}
+			}
+
+			filePointer[fd] = openFiles[fd]->getSize() - 1;
+		}
+
+		cout << "The specified file has been read from";
+		return bytesRead;
+	}
 }
 
 //Write size bytes from buffer and write them into the file referenced by fd.
@@ -163,12 +224,14 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 //If the file exceeds the maximum file size, return -1 and set osErrMsg to E_FILE_TOO_BIG.
 int FileAccessAPI::File_Write(int fd, string buffer, int size)
 {
-	if (fs_available)
+	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
 		return -1;
 	}
+
+
 	if (openFiles[fd] == NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_BAD_FD");
@@ -179,10 +242,41 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 		UMDLibOS::setOSErrorMsg("E_FILE_TOO_BIG");
 		return -1;
 	}
+	else if (MAX_FILE_SIZE * 512 - filePointer[fd] < size)
+	{
+		UMDLibOS::setOSErrorMsg("E_NO_SPACE");
+		return -1;
+	}
 	else
 	{
+		int numDiskSectorsNeeded = ceil(size / 512);
+		int count = 0;
 
+		string subBuffers[10];
+		for (int i = 0; i < numDiskSectorsNeeded; i++)
+		{
+			for (int j = 0; j < 512; j++)
+			{
+				subBuffers[i][j] = buffer[j+(512*i)];
+			}
+		}
+
+		for (int i = 0; i < NUM_SECTORS; i++)
+		{
+			if (DiskSectorBitmap[i] == 0)
+			{
+				openFiles[fd]->setDataBlocksIndex(count, i);
+				DiskAPI::Disk_Write(i, subBuffers[i]);
+				count++;
+				if (count == numDiskSectorsNeeded) break;
+			}
+		}
+
+		filePointer[fd] = filePointer[fd] + size;
 	}
+
+	cout << "File was written successfully";
+	return size;
 }
 
 //Update the current file location of the file pointer.
@@ -198,7 +292,24 @@ int FileAccessAPI::File_Seek(int fd, int offset)
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
 		return -1;
 	}
-	//if(offset < 0 || offset > )
+
+
+	if (openFiles[fd] == NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_SEEK_BAD_FD");
+		return -1;
+	}
+	else if (offset < 0 || offset > openFiles[fd]->getSize() * 512)
+	{
+		UMDLibOS::setOSErrorMsg("E_SEEK_OUT_OF_BOUNDS");
+		return -1;
+	}
+	else
+	{
+		cout << "Location in file found";
+		filePointer[fd] = offset;
+		return filePointer[fd];
+	}
 }
 
 //Close the file referred to by file descriptor fd.
@@ -213,9 +324,26 @@ int FileAccessAPI::File_Close(int fd)
 		return -1;
 	}
 
+
+	if (openFiles[fd] == NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_CLOSE_BAD_FD");
+		return -1;
+	}
+	else
+	{
+		cout << "File has been successfully closed";
+		openFiles[fd] == NULL;
+		filePointer[fd] = 0;
+		return 0;
+	}
 }
 
-//
+//This should delete the file referenced by file, including removing its name from the directory it is in,
+//and freeing up any data blocks and inodes that the file was using.
+//If the file does not currently exist, return -1 and set osErrMsg to E_NO_SUCH_FILE.
+//If the file is currently open, return -1 and set osErrMsg to E_FILE_IN_USE (and do NOT delete the file).
+//Upon success, return 0.
 int FileAccessAPI::File_Unlink(string file)
 {
 	if (!fs_available)
@@ -225,6 +353,56 @@ int FileAccessAPI::File_Unlink(string file)
 		return -1;
 	}
 
+
+	if (file[file.length() - 1] == '/')
+		file = file.substr(0, file.size - 1);
+
+	string path = file.substr(0, file.find_last_of('/'));
+
+	for (int i = 0; i < numFilesOpen; i++)
+	{
+		if (openFiles[i]->getName() == file)
+		{
+			UMDLibOS::setOSErrorMsg("E_FILE_IN_USE");
+			return -1;
+		}
+	}
+
+	if (findFile(path, file) == NULL)
+	{
+		UMDLibOS::setOSErrorMsg("E_NO_SUCH_FILE");
+		return -1;
+	}
+	else
+	{
+		string zeroString = "";
+		for (int i = 0; i < 512; i++)
+		{
+			zeroString += "0";
+		}
+
+		DirectoryINode* fileDirectory = DirectoryAPI::findDirectory(path);
+		FileINode* fileINode = findFile(path, file);
+		int diskSectorIndex;
+
+		for (int i = 0; i < fileDirectory->getNumberSubFiles; i++)
+		{
+			if (fileDirectory->subFiles[i]->getName() == file)
+			{
+				fileDirectory->subFiles[i] = NULL;
+			}
+		}
+
+		for (int i = 0; i < fileINode->getNumberDataBlocks(); i++)
+		{
+			diskSectorIndex = fileINode->getDataBlocksIndex(i);
+			DiskSectorBitmap[diskSectorIndex] = 0;
+			DiskAPI::Disk_Write(diskSectorIndex, zeroString);
+		}
+
+		cout << "File was successfully deleted";
+		return 0;
+	}
 }
 
 
@@ -233,16 +411,26 @@ int FileAccessAPI::File_Unlink(string file)
 //
 FileINode* FileAccessAPI::findFile(string path, string file)
 {
-//	DirectoryINode directoryINode = DirectoryAPI::findDirectory(path);
-	return NULL;
-}
+	DirectoryINode* fileDirectory = DirectoryAPI::findDirectory(path);
 
-//shared_ptr<FileINode> FileAccessAPI::findFile(string file)
-//{
-//	return NULL;
-//}
+	for (int i = 0; i < fileDirectory->getNumberSubFiles(); i++)
+	{
+		if (fileDirectory->subFiles[i]->getName() == file)
+		{
+			return fileDirectory->subFiles[i];
+		}
+	}
+}
 
 int FileAccessAPI::getNumFiles()
 {
 	return numFiles;
+}
+
+void FileAccessAPI::showOpenFiles()
+{
+	for (int i = 0; i < numFilesOpen; i++)
+	{
+		cout << i << ". " << openFiles[i]->getName() << endl;
+	}
 }

@@ -21,6 +21,7 @@ static string diskErrMsg;
 static bool fs_available;
 static FileAccessAPI* FA_API;
 static FileSystemAPI* FS_API;
+static DirectoryAPI* DR_API;
 static bool DiskSectorBitmap[NUM_SECTORS];
 static bool INodeBitmap[NUM_SECTORS];
 static DirectoryINode rootDirectory;
