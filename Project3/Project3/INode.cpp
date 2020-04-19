@@ -35,16 +35,16 @@ void DirectoryINode::setNumberSubDirectories(int quantity)
 	numberSubDirectories = quantity;
 }
 
-void DirectoryINode::addSubFile(shared_ptr<FileINode> subFile)
+void DirectoryINode::addSubFile(FileINode* subFile)
 {
 	size += subFile->getSize();
-	subFiles[numberSubFiles].reset(subFile.get());
+	subFiles[numberSubFiles] = subFile;
 	numberSubFiles++;
 }
 
-void DirectoryINode::addSubDirectory(shared_ptr<DirectoryINode> subDirectory)
+void DirectoryINode::addSubDirectory(DirectoryINode* subDirectory)
 {
-	subDirectories[numberSubDirectories].reset(subDirectory.get());
+	subDirectories[numberSubDirectories] = subDirectory;
 	numberSubDirectories++;
 }
 
@@ -64,9 +64,9 @@ int INode::getNumberDataBlocks()
 	return numberDataBlocks;
 }
 
-void INode::assignDataBlock(shared_ptr<DataBlock> dataBlock)
+void INode::assignDataBlock(DataBlock* dataBlock)
 {
-	dataBlocks[numberDataBlocks].reset(dataBlock.get());
+	dataBlocks[numberDataBlocks] = dataBlock;
 	numberDataBlocks++;
 }
 

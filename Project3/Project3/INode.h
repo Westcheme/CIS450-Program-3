@@ -32,14 +32,14 @@ protected:
 	int ID;
 	string name; //In a real Linux file system, the name of the file would not be stored in the INode, but 
 	string fileType;
-	shared_ptr<DataBlock> dataBlocks[10]; //Maximum number of 10 referenced by an INode
+	DataBlock* dataBlocks[10]; //Maximum number of 10 referenced by an INode
 	int numberDataBlocks;
 public:
 	INode();
 	void setName(string name);
 	string getName();
 	int getNumberDataBlocks();
-	void assignDataBlock(shared_ptr<DataBlock> dataBlock);
+	void assignDataBlock(DataBlock* dataBlock);
 	int getSize();
 	int getID();
 };
@@ -61,12 +61,12 @@ private:
 	int numberSubDirectories = 0;
 public:
 	DirectoryINode();
-	shared_ptr<FileINode>* subFiles;
-	shared_ptr<DirectoryINode>* subDirectories;
+	FileINode* subFiles[100];
+	DirectoryINode* subDirectories[100];
 	int getNumberSubDirectories();
 	int getNumberSubFiles();
 	void setNumberSubDirectories(int quantity);
-	void addSubFile(shared_ptr<FileINode> subFile);
-	void addSubDirectory(shared_ptr<DirectoryINode> subDirectory);
+	void addSubFile(FileINode* subFile);
+	void addSubDirectory(DirectoryINode* subDirectory);
 	int getSize();
 };

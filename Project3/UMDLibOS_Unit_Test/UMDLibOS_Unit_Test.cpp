@@ -7,6 +7,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
+DirectoryINode globalDirectoryINode;
+DirectoryINode* globalDirectoryINodePointer;
+
 namespace UMDLibOSUnitTest
 {
 	TEST_CLASS(UMDLibOSUnitTest)
@@ -136,7 +139,7 @@ namespace UMDLibOSUnitTest
 			string expectedName = "testDirectory/";
 			string foundName;
 			int actualReturn, expectedReturn = 0;
-			shared_ptr<DirectoryINode> returnedDirectory = NULL;
+			DirectoryINode* returnedDirectory = NULL;
 
 			//act
 			DiskAPI::Disk_Init();
@@ -215,20 +218,71 @@ namespace UMDLibOSUnitTest
 			Assert::AreEqual(expectedInt, output);
 		}
 
-		TEST_METHOD(unique_ptr_reset_test)
+		TEST_METHOD(DirectoryINode_Pounter_Assignment_Test)
 		{
 			//arrange
-			DirectoryINode* newINode = new DirectoryINode;
-			newINode->setName("TestINode");
-			unique_ptr<DirectoryINode> initialINode;
-			unique_ptr<DirectoryINode> resetINode;
-			initialINode.reset(newINode);
+			DirectoryINode* initialINode;
+			DirectoryINode* assignedINode;
+
+			initialINode = new DirectoryINode;
+			initialINode->setName("TestName");
 			
 			//act
-			resetINode.reset(initialINode.get());
+			assignedINode = initialINode;
 
 			//assert
-			Assert::AreEqual(initialINode->getName(), resetINode->getName());
+			Assert::AreEqual(initialINode->getID(), assignedINode->getID());
+		}
+
+		TEST_METHOD(Global_DirectoryINode_Assignment_Test)
+		{
+			//arrange
+			DirectoryINode* initialINode;
+			DirectoryINode* assignedINode;
+
+			initialINode = new DirectoryINode;
+			initialINode->setName("TestName");
+			globalDirectoryINode = *initialINode;
+
+			//act
+			assignedINode = &globalDirectoryINode;
+
+			//assert
+			Assert::AreEqual(initialINode->getID(), assignedINode->getID());
+		}
+
+		TEST_METHOD(Global_DirectoryINode_Pointer_Assignment_Test)
+		{
+			//arrange
+			DirectoryINode* initialINode;
+			DirectoryINode* assignedINode;
+
+			initialINode = new DirectoryINode;
+			initialINode->setName("TestName");
+			globalDirectoryINodePointer = initialINode;
+
+			//act
+			assignedINode = globalDirectoryINodePointer;
+
+			//assert
+			Assert::AreEqual(initialINode->getID(), assignedINode->getID());
+		}
+
+		TEST_METHOD(string_find_substr_test)
+		{
+			//arrange
+			string inputString = "/testDirectoryName";
+			string delimiter = "/";
+			int expectedReturnValue = -1;
+			int actualReturnValue;
+
+			//act
+			actualReturnValue = inputString.find(delimiter);
+			inputString = inputString.substr(actualReturnValue + 1, inputString.length() - actualReturnValue);
+			actualReturnValue = inputString.find(delimiter);
+
+			//assert
+			Assert::AreEqual(expectedReturnValue, actualReturnValue);
 		}
 
 	};
