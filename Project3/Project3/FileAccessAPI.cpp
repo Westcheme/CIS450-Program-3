@@ -48,7 +48,7 @@ int FileAccessAPI::File_Create(string file)
 		cout << "File name cannot be empty string, file was not created";
 		return -1;
 	}
-	else if (findFile(file) != NULL)
+	else if (findFile(path, file) != NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
 		cout << "File already already exists within this directory, file was not created";
@@ -68,6 +68,11 @@ int FileAccessAPI::File_Create(string file)
 //If there are already maximum number of files open, return -1 and set osErrMsg to E_TOO_MANY_OPEN_FILES
 int FileAccessAPI::File_Open(string file)
 {
+	if (file[file.length() - 1] == '/')
+		file = file.substr(0, file.size - 1);
+
+	string path = file.substr(0, file.find_last_of('/'));
+
 	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
@@ -79,7 +84,7 @@ int FileAccessAPI::File_Open(string file)
 		UMDLibOS::setOSErrorMsg("E_TOO_MANY_OPEN_FILES");
 		return -1;
 	}
-	else if (findFile(file) == NULL)
+	else if (findFile(path, file) == NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_NO_SUCH_FILE");
 		return -1;
@@ -87,7 +92,7 @@ int FileAccessAPI::File_Open(string file)
 	else
 	{
 		int fileDescriptor = numFilesOpen;
-		openFiles[fileDescriptor] = findFile(file);
+		openFiles[fileDescriptor] = findFile(path, file);
 		filePointer[fileDescriptor] = 0;
 		numFilesOpen++;
 		return fileDescriptor;
@@ -102,6 +107,8 @@ int FileAccessAPI::File_Open(string file)
 //If the file pointer is already at the end of the file, zero should be returned.
 int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 {
+	int bytesRead = 0;
+
 	if (!fs_available)
 	{
 		cout << "File System not available: Disk not booted.";
@@ -121,11 +128,30 @@ int FileAccessAPI::File_Read(int fd, string* buffer, int size)
 	else if (size <= openFiles[fd]->getSize())
 	{
 		filePointer[fd] += size;
+		bytesRead = size;
 	}
 	else if (size > openFiles[fd]->getSize())
 	{
-		filePointer[fd] += openFiles[fd]->getSize();
+		filePointer[fd] += openFiles[fd]->getSize() - filePointer[fd];
+		bytesRead = openFiles[fd].get->size - filePointer[fd];
 	}
+	else
+	{
+		if ((openFiles[fd].get->size - filePointer[fd]) / size >= 1)
+		{
+			filePointer[fd] += size;
+			bytesRead = size;
+		}
+		else
+		{
+			filePointer[fd] += openFiles[fd].get->size - filePointer[fd] - 1;
+			bytesRead = openFiles[fd].get->size - filePointer[fd];
+		}
+	}
+
+	//RETRIEVE THE DATABLOCKS FROM MEMORY AND PLACE IN BUFFER
+
+	return bytesRead;
 }
 
 //Write size bytes from buffer and write them into the file referenced by fd.
@@ -148,7 +174,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 		UMDLibOS::setOSErrorMsg("E_BAD_FD");
 		return -1;
 	}
-	else if (openFiles[fd]->getSize() > MAX_FILE_SIZE)
+	else if (openFiles[fd]->getSize() > MAX_FILE_SIZE * 512)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_TOO_BIG");
 		return -1;
@@ -201,7 +227,14 @@ int FileAccessAPI::File_Unlink(string file)
 
 }
 
+
 //HEPLER METHODS BELOW:
+
+
+unique_ptr<FileINode> FileAccessAPI::findFile(string path, string file)
+{
+	DirectoryINode directoryINode = DirectoryAPI::findDirectory(path);
+}
 
 unique_ptr<FileINode> FileAccessAPI::findFile(string file)
 {
