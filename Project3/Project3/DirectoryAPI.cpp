@@ -30,7 +30,7 @@ int DirectoryAPI::Dir_Create(string path)
 	}
 	else if (findDirectory(path) != NULL)	//TODO: Must find if there is a directory of the same name only in the current directory, if found do not create directory, cannot have duplicate directories
 	{
-		//cout << "Parent directory not found";
+		cout << "File Already Exists";
 		UMDLibOS::setOSErrorMsg("E_DIR_CREATE");
 		return -1;
 	}
@@ -196,12 +196,10 @@ DirectoryINode* DirectoryAPI::findDirectory(string path)
 	if (path[path.size() - 1] == '/')
 		path = path.substr(0, path.size() - 1);
 	int foundIndex = path.find(delimiter, 1);
-	while (foundIndex >= 0) 
+	while (foundIndex >= 0) //loop while delimiters exist that aren't the first char
 	{
-		if (currentINode == NULL)
-			if(currentINode == &rootDirectory)
-				return NULL;
-		foundString = path.substr(1, path.find(delimiter) - 1);
+
+		foundString = path.substr(1, path.find(delimiter, 1));
 		path = path.substr(path.find(delimiter) + 1, path.size() - path.find(delimiter));
 		for (int i = 0; i < currentINode->getNumberSubDirectories(); i++)
 		{
@@ -216,6 +214,8 @@ DirectoryINode* DirectoryAPI::findDirectory(string path)
 	}
 	//handles the last directory name
 	foundString = path;
+
+	//Format string to correctly match expected name
 	if (foundString[0] == delimiter)
 		foundString = foundString.substr(foundString.find(delimiter) + 1, foundString.length() - 1);
 	if (foundString[foundString.length() - 1] != delimiter)

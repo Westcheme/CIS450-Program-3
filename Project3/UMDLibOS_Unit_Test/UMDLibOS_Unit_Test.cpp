@@ -167,11 +167,39 @@ namespace UMDLibOSUnitTest
 		}
 
 		//Test Method template
-		TEST_METHOD(Create_Directory_On_Sub)
+		TEST_METHOD(Create_Directory_In_Sub_Dir)
 		{
 			//arrange
+			string parentPath = "/testDirectory";
+			string subPath = parentPath + "/testSub";
+			string expectedName = "testSub/";
+			string foundName;
+			int actualReturn, expectedReturn = 0;
+			DirectoryINode* returnedDirectory = NULL;
+
 			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DirectoryAPI::Dir_Create(parentPath);
+			actualReturn = DirectoryAPI::Dir_Create(subPath);
+			if (expectedReturn != actualReturn) {
+				foundName = "failed to create directory";
+			}
+			else
+			{
+				returnedDirectory = DirectoryAPI::findDirectory(subPath);
+			}
+
+			if (returnedDirectory == NULL) {
+				foundName = "Directory created is NULL";
+			}
+			else
+			{
+				foundName = returnedDirectory->getName();
+			}
+
 			//assert
+			Assert::AreEqual(expectedName, foundName);
 		}
 
 		//Test Method template
@@ -181,6 +209,9 @@ namespace UMDLibOSUnitTest
 			string expectedOSErrorMsg = "E_DIR_CREATE";
 
 			//act
+			DiskAPI::Disk_Init();
+			DiskAPI::Disk_Load();
+			DirectoryAPI::Dir_Create("ThisNameIs16Char");
 
 			//assert
 			Assert::AreEqual(expectedOSErrorMsg, UMDLibOS::getOSErrorMsg());
