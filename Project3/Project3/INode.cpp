@@ -10,7 +10,7 @@ INode::INode()
 	numberDataBlocks = 0;
 	for (int i = 0; i < MAX_FILE_SIZE; i++)
 	{
-		dataBlocksIndex[i] = 0;
+		dataBlocks[i] = 0;
 	}
 }
 
@@ -99,4 +99,14 @@ int DirectoryINode::getSize()
 
 	return size;
 
+}
+
+int INode::getDataBlocksIndex(int index)
+{
+	return dataBlocks[index];
+}
+
+void INode::setDataBlocksIndex(int index, int diskSectorIndex)
+{
+	dataBlocks[index] = diskSectorIndex;
 }

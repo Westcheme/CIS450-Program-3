@@ -137,13 +137,13 @@ int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 		int dataBlockIndexStart = ceil(filePointer[fd] / 512);
 		int dataBlockIndexEnd = ceil((filePointer[fd] + size) / 512);
 
-		if ((openFiles[fd].get->size - filePointer[fd]) / size >= 1)
+		if ((openFiles[fd]->getSize() - filePointer[fd]) / size >= 1)
 		{
 			bytesRead = size;
 
 			for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
 			{
-				DiskAPI::Disk_Read(openFiles[fd].get->dataBlocksIndex[i], tempBuffer);
+				DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
 
 				if (i == 0)
 				{
@@ -175,11 +175,11 @@ int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 		}
 		else
 		{
-			bytesRead = openFiles[fd].get->size - filePointer[fd];
+			bytesRead = openFiles[fd]->getSize() - filePointer[fd];
 
 			for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
 			{
-				DiskAPI::Disk_Read(openFiles[fd].get->dataBlocksIndex[i], tempBuffer);
+				DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
 
 				if (i == 0)
 				{
@@ -207,7 +207,7 @@ int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 				}
 			}
 
-			filePointer[fd] = openFiles[fd].get->size - 1;
+			filePointer[fd] = openFiles[fd]->getSize() - 1;
 		}
 
 		cout << "The specified file has been read from";
@@ -265,7 +265,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 		{
 			if (DiskSectorBitmap[i] == 0)
 			{
-				openFiles[fd].get->dataBlocksIndex[count] = i;
+				openFiles[fd]->setDataBlocksIndex(count, i);
 				DiskAPI::Disk_Write(i, subBuffers[i]);
 				count++;
 				if (count == numDiskSectorsNeeded) break;
@@ -299,7 +299,7 @@ int FileAccessAPI::File_Seek(int fd, int offset)
 		UMDLibOS::setOSErrorMsg("E_SEEK_BAD_FD");
 		return -1;
 	}
-	else if (offset < 0 || offset > openFiles[fd].get->size * 512)
+	else if (offset < 0 || offset > openFiles[fd]->getSize() * 512)
 	{
 		UMDLibOS::setOSErrorMsg("E_SEEK_OUT_OF_BOUNDS");
 		return -1;
@@ -361,7 +361,7 @@ int FileAccessAPI::File_Unlink(string file)
 
 	for (int i = 0; i < numFilesOpen; i++)
 	{
-		if (openFiles[i].get->name == file)
+		if (openFiles[i]->getName() == file)
 		{
 			UMDLibOS::setOSErrorMsg("E_FILE_IN_USE");
 			return -1;
@@ -381,8 +381,8 @@ int FileAccessAPI::File_Unlink(string file)
 			zeroString += "0";
 		}
 
-		unique_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
-		unique_ptr<FileINode> fileINode = findFile(path, file);
+		DirectoryINode* fileDirectory = DirectoryAPI::findDirectory(path);
+		FileINode* fileINode = findFile(path, file);
 		int diskSectorIndex;
 
 		for (int i = 0; i < fileDirectory->getNumberSubFiles; i++)
@@ -393,9 +393,9 @@ int FileAccessAPI::File_Unlink(string file)
 			}
 		}
 
-		for (int i = 0; i < fileINode.get->numberDataBlocks; i++)
+		for (int i = 0; i < fileINode->getNumberDataBlocks(); i++)
 		{
-			diskSectorIndex = fileINode.get->dataBlocksIndex[i];
+			diskSectorIndex = fileINode->getDataBlocksIndex(i);
 			DiskSectorBitmap[diskSectorIndex] = 0;
 			DiskAPI::Disk_Write(diskSectorIndex, zeroString);
 		}
@@ -411,7 +411,7 @@ int FileAccessAPI::File_Unlink(string file)
 //
 FileINode* FileAccessAPI::findFile(string path, string file)
 {
-	shared_ptr<DirectoryINode> fileDirectory = DirectoryAPI::findDirectory(path);
+	DirectoryINode* fileDirectory = DirectoryAPI::findDirectory(path);
 
 	for (int i = 0; i < fileDirectory->getNumberSubFiles(); i++)
 	{
