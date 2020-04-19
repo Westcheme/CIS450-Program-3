@@ -56,6 +56,7 @@ int FileAccessAPI::File_Create(string file)
 	}
 	else
 	{
+		cout << "File was created successfully";
 		FileINode* newFile = new FileINode;
 		newFile->setName(file);
 		numFiles++;
@@ -93,6 +94,7 @@ int FileAccessAPI::File_Open(string file)
 	}
 	else
 	{
+		cout << "Successfully opened file";
 		int fileDescriptor = numFilesOpen;
 		openFiles[fileDescriptor] = findFile(path, file);
 		filePointer[fileDescriptor] = 0;
@@ -208,6 +210,7 @@ int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 			filePointer[fd] = openFiles[fd].get->size - 1;
 		}
 
+		cout << "The specified file has been read from";
 		return bytesRead;
 	}
 }
@@ -272,6 +275,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 		filePointer[fd] = filePointer[fd] + size;
 	}
 
+	cout << "File was written successfully";
 	return size;
 }
 
@@ -302,6 +306,7 @@ int FileAccessAPI::File_Seek(int fd, int offset)
 	}
 	else
 	{
+		cout << "Location in file found";
 		filePointer[fd] = offset;
 		return filePointer[fd];
 	}
@@ -327,6 +332,7 @@ int FileAccessAPI::File_Close(int fd)
 	}
 	else
 	{
+		cout << "File has been successfully closed";
 		openFiles[fd] == NULL;
 		filePointer[fd] = 0;
 		return 0;
@@ -394,6 +400,7 @@ int FileAccessAPI::File_Unlink(string file)
 			DiskAPI::Disk_Write(diskSectorIndex, zeroString);
 		}
 
+		cout << "File was successfully deleted";
 		return 0;
 	}
 }
