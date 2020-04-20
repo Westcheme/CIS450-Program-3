@@ -22,6 +22,9 @@ void UMDLibOS::inputSeekingLoop() {
 	int integerResponse;
 	string stringResponse;
 
+	string buffer;
+	int size;
+
 	displayWelcomeMessage();
 
 	//askLoadExternalDisk(); //Loads an external disk from a file and writes it to externalDisk
@@ -48,8 +51,6 @@ void UMDLibOS::inputSeekingLoop() {
 				FA_API->File_Open(stringResponse);
 				break;
 			case 3:
-				string buffer;
-				int size;
 				FA_API->showOpenFiles();
 				cout << "Choose a file: ";
 				cin >> integerResponse;
@@ -58,8 +59,6 @@ void UMDLibOS::inputSeekingLoop() {
 				FA_API->File_Read(integerResponse, buffer, size);
 				break;
 			case 4:
-				string buffer;
-				int size;
 				FA_API->showOpenFiles();
 				cout << "Choose a file: ";
 				cin >> integerResponse;
