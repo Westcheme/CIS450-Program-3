@@ -8,13 +8,14 @@ using namespace std;
 
 class UMDLibOS;
 
+static int numFiles;
+static int numFilesOpen;
+static FileINode* openFiles[MAX_NUM_OPEN_FILES];
+static int filePointer[MAX_NUM_OPEN_FILES];
+
 class FileAccessAPI
 {
 private:
-	int numFiles;
-	int numFilesOpen;
-	FileINode* openFiles[MAX_NUM_OPEN_FILES];
-	int filePointer[MAX_NUM_OPEN_FILES];
 public:
 	FileAccessAPI();
 	int File_Create(string file);

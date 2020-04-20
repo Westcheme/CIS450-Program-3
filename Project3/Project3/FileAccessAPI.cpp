@@ -18,7 +18,7 @@ FileAccessAPI::FileAccessAPI()
 //Failure: return -1 and set osErrMsg to E_FILE_CREATE
 int FileAccessAPI::File_Create(string file)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -28,9 +28,13 @@ int FileAccessAPI::File_Create(string file)
 	if (file[file.length() - 1] == '/')
 		file = file.substr(0, file.size() - 1);
 
-	string path = file.substr(0, file.find_last_of('/'));
+	string path = file.substr(0, file.find_last_of('/') + 1);
 
-	if (DirectoryAPI::findDirectory(path) == NULL)
+	file = file.substr(file.find_last_of('/'), file.size() - file.find_last_of('/') + 1);
+
+	DirectoryINode* parentDirectory = DirectoryAPI::findDirectory(path);
+
+	if (parentDirectory == NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
 		cout << "The path does not exist, file was not created";
@@ -51,7 +55,7 @@ int FileAccessAPI::File_Create(string file)
 	else if (findFile(path, file) != NULL)
 	{
 		UMDLibOS::setOSErrorMsg("E_FILE_CREATE");
-		cout << "File already already exists within this directory, file was not created";
+		cout << "File already exists within this directory, file was not created";
 		return -1;
 	}
 	else
@@ -59,6 +63,7 @@ int FileAccessAPI::File_Create(string file)
 		cout << "File was created successfully";
 		FileINode* newFile = new FileINode;
 		newFile->setName(file);
+		parentDirectory->addSubFile(newFile);
 		numFiles++;
 		return 0;
 	}
@@ -69,18 +74,19 @@ int FileAccessAPI::File_Create(string file)
 //If there are already maximum number of files open, return -1 and set osErrMsg to E_TOO_MANY_OPEN_FILES
 int FileAccessAPI::File_Open(string file)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
 		return -1;
 	}
 
-
 	if (file[file.length() - 1] == '/')
-		file = file.substr(0, file.size - 1);
+		file = file.substr(0, file.size() - 1);
 
-	string path = file.substr(0, file.find_last_of('/'));
+	string path = file.substr(0, file.find_last_of('/') + 1);
+
+	file = file.substr(file.find_last_of('/'), file.size() - file.find_last_of('/') + 1);
 
 	if (numFilesOpen == MAX_NUM_OPEN_FILES)
 	{
@@ -111,7 +117,7 @@ int FileAccessAPI::File_Open(string file)
 //If the file pointer is already at the end of the file, zero should be returned.
 int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -131,84 +137,97 @@ int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 	else
 	{
 		buffer = "";
-		string tempBuffer;
-		int count = 0;
-		int bytesRead;
-		int dataBlockIndexStart = ceil(filePointer[fd] / 512);
-		int dataBlockIndexEnd = ceil((filePointer[fd] + size) / 512);
+		//string tempBuffer;
+		//int count = 0;
+		int bytesRead = -1;
+		//int dataBlockIndexStart = ceil(filePointer[fd] / 512);
+		//int dataBlockIndexEnd = ceil((filePointer[fd] + size) / 512);
 
-		if ((openFiles[fd]->getSize() - filePointer[fd]) / size >= 1)
-		{
-			bytesRead = size;
 
-			for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
-			{
-				DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
+		//if ((openFiles[fd]->getSize() - filePointer[fd]) / size >= 1)
+		//{
+		//	bytesRead = size;
 
-				if (i == 0)
-				{
-					for (int j = filePointer[fd]; j < 512; j++)
-					{
-						buffer[count] += tempBuffer[j];
-						count++;
-					}
-				}
-				else if (i == openFiles[fd]->getNumberDataBlocks()-1)
-				{
-					for (int j = 0; j < filePointer[fd] + size - 512; j++)
-					{
-						buffer[count] += tempBuffer[j];
-						count++;
-					}
-				}
-				else
-				{
-					for (int j = 0; j < 512; j++)
-					{
-						buffer[count] += tempBuffer[j];
-						count++;
-					}
-				}
-			}
+		//	for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
+		//	{
+		//		DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
 
-			filePointer[fd] = filePointer[fd] + size;
+		//		if (i == 0)
+		//		{
+		//			for (int j = filePointer[fd]; j < 512; j++)
+		//			{
+		//				buffer[count] += tempBuffer[j];
+		//				count++;
+		//			}
+		//		}
+		//		else if (i == openFiles[fd]->getNumberDataBlocks()-1)
+		//		{
+		//			for (int j = 0; j < filePointer[fd] + size - 512; j++)
+		//			{
+		//				buffer[count] += tempBuffer[j];
+		//				count++;
+		//			}
+		//		}
+		//		else
+		//		{
+		//			for (int j = 0; j < 512; j++)
+		//			{
+		//				buffer[count] += tempBuffer[j];
+		//				count++;
+		//			}
+		//		}
+		//	}
+
+		//	//filePointer[fd] = filePointer[fd] + size;
+		//}
+		//else
+		//{
+		//	bytesRead = openFiles[fd]->getSize() - filePointer[fd];
+
+		//	for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
+		//	{
+		//		DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
+
+		//		if (i == 0)
+		//		{
+		//			for (int j = filePointer[fd]; j < 512; j++)
+		//			{
+		//				buffer[count] += tempBuffer[j];
+		//				count++;
+		//			}
+		//		}
+		//		else if (i == openFiles[fd]->getNumberDataBlocks() - 1)
+		//		{
+		//			for (int j = 0; j < filePointer[fd] + size - 512; j++)
+		//			{
+		//				buffer[count] += tempBuffer[j];
+		//				count++;
+		//			}
+		//		}
+		//		else
+		//		{
+		//			for (int j = 0; j < 512; j++)
+		//			{
+		//				buffer[count] += tempBuffer[j];
+		//				count++;
+		//			}
+		//		}
+		//	}
+
+		//	//filePointer[fd] = openFiles[fd]->getSize() - 1;
+		//}
+
+		string dataBlockContent = "";
+		string content;
+
+		for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++) {
+			DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), content);
+			dataBlockContent += content;
 		}
-		else
-		{
-			bytesRead = openFiles[fd]->getSize() - filePointer[fd];
 
-			for (int i = 0; i < openFiles[fd]->getNumberDataBlocks(); i++)
-			{
-				DiskAPI::Disk_Read(openFiles[fd]->getDataBlocksIndex(i), tempBuffer);
+		content = dataBlockContent.substr(filePointer[fd], filePointer[fd] + size);
 
-				if (i == 0)
-				{
-					for (int j = filePointer[fd]; j < 512; j++)
-					{
-						buffer[count] += tempBuffer[j];
-						count++;
-					}
-				}
-				else if (i == openFiles[fd]->getNumberDataBlocks() - 1)
-				{
-					for (int j = 0; j < filePointer[fd] + size - 512; j++)
-					{
-						buffer[count] += tempBuffer[j];
-						count++;
-					}
-				}
-				else
-				{
-					for (int j = 0; j < 512; j++)
-					{
-						buffer[count] += tempBuffer[j];
-						count++;
-					}
-				}
-			}
-
-			filePointer[fd] = openFiles[fd]->getSize() - 1;
-		}
+		buffer = content;
 
 		cout << "The specified file has been read from";
 		return bytesRead;
@@ -224,7 +243,7 @@ int FileAccessAPI::File_Read(int fd, string& buffer, int size)
 //If the file exceeds the maximum file size, return -1 and set osErrMsg to E_FILE_TOO_BIG.
 int FileAccessAPI::File_Write(int fd, string buffer, int size)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -247,18 +266,20 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 		UMDLibOS::setOSErrorMsg("E_NO_SPACE");
 		return -1;
 	}
+	else if (size != buffer.length())
+	{
+		UMDLibOS::setOSErrorMsg("E_SIZE_MISMATCH");
+		return -1;
+	}
 	else
 	{
-		int numDiskSectorsNeeded = ceil(size / 512);
+		int numDiskSectorsNeeded = ceil(((double)size) / 512);
 		int count = 0;
 
 		string subBuffers[10];
 		for (int i = 0; i < numDiskSectorsNeeded; i++)
 		{
-			for (int j = 0; j < 512; j++)
-			{
-				subBuffers[i][j] = buffer[j+(512*i)];
-			}
+			subBuffers[i] = buffer.substr(512 * i, (i < numDiskSectorsNeeded - 1) ? 512 : size % 512 ).append(512 - (i < numDiskSectorsNeeded - 1) ? 512 : size % 512, '0');
 		}
 
 		for (int i = 0; i < NUM_SECTORS; i++)
@@ -268,7 +289,10 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 				openFiles[fd]->setDataBlocksIndex(count, i);
 				DiskAPI::Disk_Write(i, subBuffers[i]);
 				count++;
-				if (count == numDiskSectorsNeeded) break;
+				if (count == numDiskSectorsNeeded) {
+					openFiles[fd]->setNumberDataBlocks(numDiskSectorsNeeded);
+					break;
+				}
 			}
 		}
 
@@ -276,6 +300,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 	}
 
 	cout << "File was written successfully";
+	File_Seek(fd, 0);
 	return size;
 }
 
@@ -286,7 +311,7 @@ int FileAccessAPI::File_Write(int fd, string buffer, int size)
 //Success: return the new location of the file pointer.
 int FileAccessAPI::File_Seek(int fd, int offset)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -317,7 +342,7 @@ int FileAccessAPI::File_Seek(int fd, int offset)
 //Success: return 0
 int FileAccessAPI::File_Close(int fd)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
@@ -334,6 +359,14 @@ int FileAccessAPI::File_Close(int fd)
 	{
 		cout << "File has been successfully closed";
 		openFiles[fd] == NULL;
+		numFilesOpen--;
+		for (int i = fd; i < 10; i++) {
+			if (i == 9)
+				openFiles[fd] = NULL;
+			if (openFiles[fd] == NULL)
+				break;
+			openFiles[fd] = openFiles[fd + 1];
+		}
 		filePointer[fd] = 0;
 		return 0;
 	}
@@ -346,19 +379,20 @@ int FileAccessAPI::File_Close(int fd)
 //Upon success, return 0.
 int FileAccessAPI::File_Unlink(string file)
 {
-	if (!fs_available)
+	if (!(&fs_available))
 	{
 		cout << "File System not available: Disk not booted.";
 		UMDLibOS::setOSErrorMsg("FS_NOT_BOOTED");
 		return -1;
 	}
 
-
 	if (file[file.length() - 1] == '/')
-		file = file.substr(0, file.size - 1);
+		file = file.substr(0, file.size() - 1);
 
-	string path = file.substr(0, file.find_last_of('/'));
+	string path = file.substr(0, file.find_last_of('/') + 1);
 
+	file = file.substr(file.find_last_of('/'), file.size() - file.find_last_of('/') + 1);
+	
 	for (int i = 0; i < numFilesOpen; i++)
 	{
 		if (openFiles[i]->getName() == file)
@@ -385,19 +419,20 @@ int FileAccessAPI::File_Unlink(string file)
 		FileINode* fileINode = findFile(path, file);
 		int diskSectorIndex;
 
-		for (int i = 0; i < fileDirectory->getNumberSubFiles; i++)
-		{
-			if (fileDirectory->subFiles[i]->getName() == file)
-			{
-				fileDirectory->subFiles[i] = NULL;
-			}
-		}
-
 		for (int i = 0; i < fileINode->getNumberDataBlocks(); i++)
 		{
 			diskSectorIndex = fileINode->getDataBlocksIndex(i);
 			DiskSectorBitmap[diskSectorIndex] = 0;
 			DiskAPI::Disk_Write(diskSectorIndex, zeroString);
+		}
+
+		for (int i = 0; i < fileDirectory->getNumberSubFiles(); i++)
+		{
+			if (fileDirectory->subFiles[i]->getName() == file)
+			{
+				fileDirectory->removeFile(file);
+				break;
+			}
 		}
 
 		cout << "File was successfully deleted";
@@ -420,6 +455,9 @@ FileINode* FileAccessAPI::findFile(string path, string file)
 			return fileDirectory->subFiles[i];
 		}
 	}
+
+	return NULL;
+
 }
 
 int FileAccessAPI::getNumFiles()
@@ -429,8 +467,10 @@ int FileAccessAPI::getNumFiles()
 
 void FileAccessAPI::showOpenFiles()
 {
+	cout << "Here are the current Open Files\n";
 	for (int i = 0; i < numFilesOpen; i++)
 	{
 		cout << i << ". " << openFiles[i]->getName() << endl;
 	}
+	cout << "\nPlease enter the number of the file.\n";
 }

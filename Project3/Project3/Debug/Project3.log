@@ -1,3 +1,4 @@
-﻿  DirectoryAPI.cpp
-C:\Users\Julius Cesar Estrope\Documents\Professional\CIS 450\Project 3\CIS450-Program-3\Project3\Project3\DirectoryAPI.cpp(138,11): warning C4018: '<': signed/unsigned mismatch
+﻿  FileAccessAPI.cpp
+C:\Users\Julius Cesar Estrope\Documents\Professional\CIS 450\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(276,28): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Julius Cesar Estrope\Documents\Professional\CIS 450\Project 3\CIS450-Program-3\Project3\Project3\FileAccessAPI.cpp(361,17): warning C4553: '==': result of expression not used; did you intend '='?
   Project3.vcxproj -> C:\Users\Julius Cesar Estrope\Documents\Professional\CIS 450\Project 3\CIS450-Program-3\Project3\Debug\Project3.exe

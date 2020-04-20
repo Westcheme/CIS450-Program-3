@@ -2,13 +2,14 @@
 #include "DiskAPI.h"
 #include "FileAccessAPI.h"
 #include "FileSystemAPI.h"
+#include "stdlib.h"
 
 UMDLibOS::UMDLibOS()
 {
 	osErrMsg = "";
 	diskErrMsg = "";
-	FS_API = new FileSystemAPI;
-	FA_API = new FileAccessAPI;
+	FS_API = new FileSystemAPI();
+	FA_API = new FileAccessAPI();
 	fs_available = false;
 	for (int i = 0; i < NUM_SECTORS; i++)
 	{
@@ -18,6 +19,9 @@ UMDLibOS::UMDLibOS()
 
 void UMDLibOS::inputSeekingLoop() {
 
+	string buffer = "";
+	int size = -1;
+	int offset = -1;
 	bool running = true;
 	int integerResponse;
 	string stringResponse;
@@ -43,12 +47,14 @@ void UMDLibOS::inputSeekingLoop() {
 			case 1:
 				cout << "Enter the directory and file name: ";
 				cin >> stringResponse;
-				FA_API->File_Create(stringResponse);
+				if (FA_API->File_Create(stringResponse) == -1)
+					cout << "Error calling File_Create.";
 				break;
 			case 2:
 				cout << "Enter the directory and file name: ";
 				cin >> stringResponse;
-				FA_API->File_Open(stringResponse);
+				if (-1 == FA_API->File_Open(stringResponse))
+					cout << "Error calling File_Open";
 				break;
 			case 3:
 				FA_API->showOpenFiles();
@@ -56,7 +62,9 @@ void UMDLibOS::inputSeekingLoop() {
 				cin >> integerResponse;
 				cout << "Enter a size: ";
 				cin >> size;
-				FA_API->File_Read(integerResponse, buffer, size);
+				if (-1 == FA_API->File_Read(integerResponse, buffer, size))
+					cout << "Error calling File_Read";
+				cout << "Buffer Contents: \n" << buffer;
 				break;
 			case 4:
 				FA_API->showOpenFiles();
@@ -64,51 +72,63 @@ void UMDLibOS::inputSeekingLoop() {
 				cin >> integerResponse;
 				cout << "Enter a size: ";
 				cin >> size;
-				FA_API->File_Write(integerResponse, buffer, size);
+				cout << "Enter the contents of the file.";
+				cin >> buffer;
+				if (-1 == FA_API->File_Write(integerResponse, buffer, size))
+					cout << "Error calling File_Write";
 				break;
 			case 5:
-				int offset;
 				FA_API->showOpenFiles();
 				cout << "Choose a file: ";
 				cin >> integerResponse;
 				cout << "Choose an offset: ";
 				cin >> offset;
-				FA_API->File_Seek(integerResponse, offset);
+				if (-1 == FA_API->File_Seek(integerResponse, offset))
+					cout << "Error calling File_Seek";
+				else
+					cout << "File pointer set.";
 				break;
 			case 6:
 				FA_API->showOpenFiles();
 				cout << "Choose a file: ";
 				cin >> integerResponse;
-				FA_API->File_Close(integerResponse);
+				if (-1 == FA_API->File_Close(integerResponse))
+					cout << "Error calling File_Close";
 				break;
 			case 7:
 				cout << "Enter the directory and file name: ";
 				cin >> stringResponse;
-				FA_API->File_Unlink(stringResponse);
+				if (-1 == FA_API->File_Unlink(stringResponse))
+					cout << "Error calling File_Unlink";
 				break;
 			case 8:
 				cout << "Enter the directory and name: ";
 				cin >> stringResponse;
-				DR_API->Dir_Create(stringResponse);
+				if (-1 == DR_API->Dir_Create(stringResponse))
+					cout << "Error calling Dir_Create";
 				break;
 			case 9:
 				cout << "Enter the directory and name: ";
 				cin >> stringResponse;
-				DR_API->Dir_Size(stringResponse);
+				if (-1 == (size = DR_API->Dir_Size(stringResponse)))
+					cout << "Error calling Dir_Size";
+				else
+					cout << "Size is " << size;
 				break;
 			case 10:
-				string buffer;
-				int size;
 				cout << "Enter the directory and name: ";
 				cin >> stringResponse;
 				cout << "Enter a size: ";
 				cin >> size;
-				DR_API->Dir_Read(stringResponse, buffer, size);
+				if (-1 == (DR_API->Dir_Read(stringResponse, buffer, size)))
+					cout << "Error calling Dir_Read";
+				cout << "Buffer contents\n" << buffer;
 				break;
 			case 11:
 				cout << "Enter the directory and name: ";
 				cin >> stringResponse;
-				DR_API->Dir_Unlink(stringResponse);
+				if (-1 == (DR_API->Dir_Unlink(stringResponse)))
+					cout << "Error in Dir_Unlink";
 				break;
 			case 12:
 				cout << getOSErrorMsg();
@@ -117,22 +137,31 @@ void UMDLibOS::inputSeekingLoop() {
 				cout << getDiskErrorMsg();
 				break;
 			case 14:
-				FS_API->FS_Boot();
+				if (-1 == (FS_API->FS_Boot()))
+					cout << "Error calling FS_Boot";
 				break;
 			case 15:
-				FS_API->FS_Sync();
+				if (-1 == (FS_API->FS_Sync()))
+					cout << "Error calling FS_Sync";
 				break;
 			case 16:
-				FS_API->FS_Reset();
+				if (-1 == (FS_API->FS_Reset()))
+					cout << "Error calling FS_Reset";
 				break;
 			case 17:
-
+				osErrMsg = "";
+				diskErrMsg = "";
 				break;
 			default:
 				println("Invalid integer entered. Please try again.");
-				cin >> stringResponse;
 				continue;
 		}
+
+		//cout << "Press enter to continue";
+		system("pause");
+
+		system("cls");
+
 	}
 
 }
@@ -197,8 +226,8 @@ void UMDLibOS::displayWelcomeMessage() {
 
 void UMDLibOS::displaySystemState() {
 	println("CURRENT SYSTEM STATE:");
-	println("OS Error:" + osErrMsg);
-	println("Disk Error:" + diskErrMsg);
+	println("OS Error: " + osErrMsg);
+	println("Disk Error: " + diskErrMsg);
 	//if osErrMsg is not null or empty display notification error message exists
 	//if diskErrMsg is not null or empty display notification error message exists
 	//Show current file

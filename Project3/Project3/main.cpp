@@ -10,5 +10,5 @@
 
 int main()
 {
-	//UMDLibOS::inputSeekingLoop();
+	UMDLibOS::inputSeekingLoop();
 }
