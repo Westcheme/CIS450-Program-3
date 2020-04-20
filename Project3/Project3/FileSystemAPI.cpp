@@ -11,7 +11,7 @@
 //Failure: return -1 and set osErrMsg to E_FILE_BOOT
 int FileSystemAPI::FS_Boot()
 {
-	bool* boolean;
+	bool* boolean = new bool;
 	//Currently always creates a new disk if something were to fail
 	DiskAPI::Disk_Init();
 
@@ -24,7 +24,6 @@ int FileSystemAPI::FS_Boot()
 
 	boolean = &fs_available;
 	*boolean = true;
-
 	return 0;
 }
 
@@ -42,7 +41,7 @@ int FileSystemAPI::FS_Sync()
 //Failure: return -1 and set osErrMsg to E_FILE_RESET
 int FileSystemAPI::FS_Reset()
 {
-	bool* boolean;
+	bool* boolean = new bool;
 	FS_Sync();
 
 	if (false /*TODO: Check if reset fails*/) { //Under what circumstances does this fail? Perhaps if FS_Sync() fails?
@@ -52,6 +51,5 @@ int FileSystemAPI::FS_Reset()
 
 	boolean = &fs_available;
 	*boolean = false;
-	fs_available = false;
 	return 0;
 }
