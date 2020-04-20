@@ -72,6 +72,11 @@ int INode::getNumberDataBlocks()
 	return numberDataBlocks;
 }
 
+void INode::setNumberDataBlocks(int number)
+{
+	numberDataBlocks = number;
+}
+
 void INode::assignDataBlock(int dataBlockID)
 {
 	dataBlocks[numberDataBlocks] = dataBlockID;
@@ -108,6 +113,38 @@ int DirectoryINode::getSize()
 
 	return size;
 
+}
+
+void DirectoryINode::removeFile(string name)
+{
+	bool foundFile = false;
+	//If null subdirectory is referenced, the method that called this incorrectly identified subdirectory name or parent name
+	for (int i = 0; i < 100; i++)
+	{
+		if (subFiles[i]->getName() == name)
+		{
+			delete subFiles[i];
+
+			if (subFiles[i] != NULL)
+				subFiles[i] = NULL;
+
+			foundFile = true;
+
+			numberSubFiles--;
+			return;
+		}
+
+		if (foundFile && i == 99)
+			subFiles[i] = NULL;
+
+		if (foundFile && i < 99)
+		{
+			if (subFiles[i] == NULL)
+				return;
+			subFiles[i] = subFiles[i + 1];
+		}
+
+	}
 }
 
 void DirectoryINode::removeSubDirectory(string name)

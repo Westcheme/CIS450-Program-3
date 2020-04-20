@@ -37,6 +37,7 @@ public:
 	void setName(string name);
 	string getName();
 	int getNumberDataBlocks();
+	void setNumberDataBlocks(int number);
 	void assignDataBlock(int dataBlockID);
 	int* getAssignedDataBlocks(int& size);
 	int getSize();
@@ -71,5 +72,6 @@ public:
 	void addSubFile(FileINode* subFile);
 	void addSubDirectory(DirectoryINode* subDirectory);
 	int getSize();
+	void removeFile(string name);
 	void removeSubDirectory(string name);
 };
